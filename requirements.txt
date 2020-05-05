@@ -1,6 +1,6 @@
 numpy
 scipy
 matplotlib
-pyqt=5.9.2
+pyqt==5.9.2
 pandas
 seaborn
