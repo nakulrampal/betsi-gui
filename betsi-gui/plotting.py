@@ -13,6 +13,7 @@ import seaborn as sns
 import statsmodels.api as sm
 from statsmodels.graphics.gofplots import ProbPlot
 import matplotlib.gridspec as gridspec
+import matplotlib.font_manager
 
 
 def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
@@ -47,9 +48,9 @@ def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
         x = x_range
         y = formula(x)
         if ax is None:
-            plt.plot(x, y, label=label, lw=1, ls='--', color='red')
+            plt.plot(x, y, label=label, lw=1, ls='--', color='red', alpha = 0.30)
         else:
-            ax.plot(x, y, label=label, lw=1, ls='--', color='red')
+            ax.plot(x, y, label=label, lw=1, ls='--', color='red', alpha = 0.30)
 
     # OLS regression
     x = sm.add_constant(p)
@@ -65,7 +66,9 @@ def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
 
     # Make new figure
     if fig_2 is None:
-        fig_2 = plt.figure(figsize=(10, 9))
+        fig_2 = plt.figure(constrained_layout=True, figsize=(9, 12))
+
+    fig_2.suptitle(f"BETSI Analysis for {name}\n", fontname="Arial", fontsize='10', fontweight='bold')
 
     # fig_2.suptitle(f"{name} Regression Diagnostics")
 
@@ -73,14 +76,16 @@ def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
     resid_vs_fit = fig_2.add_subplot(2, 2, 1)
     sns.residplot(fit_values, fit_resid, data=dataframe,
                   lowess=True,
-                  scatter_kws={'alpha': .5},
-                  line_kws={'color': 'red', 'lw': 1, 'alpha': .8},
+                  scatter_kws={'alpha': .5, 'color': 'blue'},
+                  line_kws={'color': 'red', 'lw': 2, 'alpha': 0.80},
                   ax=resid_vs_fit)
     resid_vs_fit.axes.set
-    resid_vs_fit.axes.set_title('Residuals vs Fitted')
-    resid_vs_fit.axes.set_xlabel('Fitted Values')
+    resid_vs_fit.axes.set_title('Residuals vs Fitted', fontname="Arial", fontsize = '10', fontweight='bold')
+    resid_vs_fit.axes.set_xlabel('Fitted Values', fontname="Arial", fontsize = '10')
     resid_vs_fit.locator_params(axis='x', nbins=4)
-    resid_vs_fit.axes.set_ylabel('Residuals')
+    resid_vs_fit.axes.set_ylabel('Residuals', fontname="Arial", fontsize = '10')
+    resid_vs_fit.tick_params(axis='both', which='major', labelsize=8)
+    resid_vs_fit.tick_params(axis='both', which='minor', labelsize=8)
 
     dfit_values = (max(fit_values) - min(fit_values)) * 1
     resid_vs_fit.axes.set_xlim(min(fit_values) - dfit_values, max(fit_values) + dfit_values)
@@ -91,34 +96,38 @@ def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
     QQ = ProbPlot(fit_stud_resid)
 
     qq_plot = QQ.qqplot(line='45', alpha=.5, lw=1, ax=fig_2.add_subplot(2, 2, 2))
-    qq_plot.axes[1].set_title('Normal Q-Q')
-    qq_plot.axes[1].set_xlabel('Theoretical Quantiles')
-    qq_plot.axes[1].set_ylabel('Studentized Residuals')
+    qq_plot.axes[1].set_title('Normal Q-Q', fontname="Arial", fontsize = '10', fontweight='bold')
+    qq_plot.axes[1].set_xlabel('Theoretical Quantiles', fontname="Arial", fontsize = '10')
+    qq_plot.axes[1].set_ylabel('Studentized Residuals', fontname="Arial", fontsize = '10')
+    qq_plot.axes[1].tick_params(axis='both', which='major', labelsize=8)
+    qq_plot.axes[1].tick_params(axis='both', which='minor', labelsize=8)
 
     abs_norm_resid = np.flip(np.argsort(np.abs(fit_stud_resid)), 0)
     abs_norm_resid_top_3 = abs_norm_resid[:3]
     for r, i in enumerate(abs_norm_resid_top_3):
         qq_plot.axes[0].annotate(i,
                                  xy=(np.flip(QQ.theoretical_quantiles, 0)[r],
-                                     fit_stud_resid[i]))
+                                     fit_stud_resid[i]), size = 8)
         # Scale Location plot
     scale_loc = fig_2.add_subplot(2, 2, 3)
-    scale_loc.scatter(fit_values, fit_stud_resid_abs_sqrt, alpha=.5)
+    scale_loc.scatter(fit_values, fit_stud_resid_abs_sqrt, alpha=.3, c = 'blue')
     sns.regplot(fit_values, fit_stud_resid_abs_sqrt,
                 scatter=False,
                 ci=False,
                 lowess=True,
-                line_kws={'color': 'red', 'lw': 1, 'alpha': .8}, ax=scale_loc)
-    scale_loc.set_title('Scale-Location')
-    scale_loc.set_xlabel('Fitted Values')
-    scale_loc.set_ylabel('$\sqrt{|Studentized\ Residuals|}$')
+                line_kws={'color': 'red', 'lw': 1, 'alpha': .3}, ax=scale_loc)
+    scale_loc.set_title('Scale-Location', fontname="Arial", fontsize = '10', fontweight='bold')
+    scale_loc.set_xlabel('Fitted Values', fontname="Arial", fontsize = '10')
+    scale_loc.set_ylabel('$\sqrt{|Studentized\ Residuals|}$', fontname="Arial", fontsize = '10')
+    scale_loc.tick_params(axis='both', which='major', labelsize=8)
+    scale_loc.tick_params(axis='both', which='minor', labelsize=8)
 
     abs_sq_norm_resid = np.flip(np.argsort(fit_stud_resid_abs_sqrt), 0)
     abs_sq_norm_resid_top_3 = abs_sq_norm_resid[:3]
     for i in abs_norm_resid_top_3:
         scale_loc.axes.annotate(i,
                                 xy=(fit_values[i],
-                                    fit_stud_resid_abs_sqrt[i]))
+                                    fit_stud_resid_abs_sqrt[i]), size=8, weight='bold')
 
     scale_loc.axes.set_xlim(min(fit_values) - .2 * max(fit_values), max(fit_values) + .2 * max(fit_values))
     scale_loc.locator_params(axis='x', nbins=4)
@@ -126,24 +135,26 @@ def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
 
     # Residuals vs leverage
     res_vs_lev = fig_2.add_subplot(2, 2, 4)
-    res_vs_lev.scatter(fit_leverage, fit_stud_resid, alpha=.5)
+    res_vs_lev.scatter(fit_leverage, fit_stud_resid, alpha=.3, color = 'blue')
     sns.regplot(fit_leverage, fit_stud_resid,
                 scatter=False,
                 ci=False,
                 lowess=True,
-                line_kws={'color': 'red', 'lw': 1, 'alpha': .8},
+                line_kws={'color': 'red', 'lw': 1, 'alpha': .3},
                 ax=res_vs_lev)
     # res_vs_lev.axes[0].set_xlim(0, max(fit_leverage)*.01)
     # res_vs_lev.axes[0].set_ylim(-3,5)
-    res_vs_lev.axes.set_title('Residuals vs Leverage')
-    res_vs_lev.axes.set_xlabel('Leverage')
-    res_vs_lev.axes.set_ylabel('Studentized Residuals')
+    res_vs_lev.axes.set_title('Residuals vs Leverage', fontname="Arial", fontsize = '10', fontweight='bold')
+    res_vs_lev.axes.set_xlabel('Leverage', fontname="Arial", fontsize = '10')
+    res_vs_lev.axes.set_ylabel('Studentized Residuals', fontname="Arial", fontsize = '10')
+    res_vs_lev.tick_params(axis='both', which='major', labelsize=8)
+    res_vs_lev.tick_params(axis='both', which='minor', labelsize=8)
 
     leverage_top_3 = np.flip(np.argsort(fit_CD), 0)[:3]
     for i in leverage_top_3:
         res_vs_lev.axes.annotate(i,
                                  xy=(fit_leverage[i],
-                                     fit_stud_resid[i]))
+                                     fit_stud_resid[i]), size=8, weight='bold')
 
     p_3 = p[min_i:min_j]
     p_2 = len(fit.params)  # number of model parameters
@@ -158,9 +169,16 @@ def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
           np.linspace(.001, max(fit_leverage), 50), ax=res_vs_lev)  # 1 line
     graph(lambda p_3: -1 * np.sqrt((1 * p_2 * (1 - p_3)) / p_3),
           np.linspace(.001, max(fit_leverage), 50), ax=res_vs_lev)  # 1 line
-    res_vs_lev.legend()
+    res_vs_lev.legend(prop={'size': 8})
 
-    plt.subplots_adjust(bottom=0.05, top=0.95, hspace=.2)
+    plt.subplots_adjust(bottom=0.07, top=0.91, hspace=.255, wspace=0.315, left=0.12, right=0.92)
+
+    #top = 0.91,
+    #bottom = 0.07,
+    #left = 0.12,
+    #right = 0.92,
+    #hspace = 0.255,
+    #wspace = 0.315
 
     # plt.tight_layout()
     return fig_2
@@ -180,10 +198,18 @@ def create_matrix_plot(bet_filtered, name, fig=None):
     """
     # Make Isotherm Plot
     if fig is None:
-        fig = plt.figure(constrained_layout=True, figsize=(9,9))
+        fig = plt.figure(figsize=(8,12))
 
-    fig.suptitle(f"{name} Analysis\n")
-    #fig.subplots_adjust(hspace=0.90)
+    #top = 0.91,
+    #bottom = 0.07,
+    #left = 0.052,
+    #right = 0.865,
+    #hspace = 1.0,
+    #wspace = 0.315
+
+    fig.set_size_inches(9, 12)
+    fig.suptitle(f"BETSI Analysis for {name}\n", fontname="Arial", fontsize = '10', fontweight='bold')
+    fig.subplots_adjust(hspace=1.0, top=0.91, bottom=0.07, left=0.052, right=0.865, wspace=0.315)
 
     gs = gridspec.GridSpec(6, 3, figure=fig)
 
@@ -226,11 +252,13 @@ def plot_isotherm(bet_filtered, ax=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
-    ax.set_title(f"Adsorption Isotherm")
-    ax.set_xlabel(r'$P/P_0$')
-    ax.set_ylabel(r'$N_2$ uptake (STP) $cm^3$ $g^{-1}$')
+    ax.set_title(f"Adsorption Isotherm", fontname="Arial", fontsize = '10', fontweight='bold')
+    ax.set_xlabel(r'$P/P_0$', fontname="Arial", fontsize = '10')
+    ax.set_ylabel(r'$N_2$ uptake (STP) $cm^3$ $g^{-1}$',fontname="Arial", fontsize = '10')
     ax.set_xlim([-0.1, 1.1])
     ax.set_ylim([0.0, max(bet_filtered.q_adsorbed)])
+    ax.tick_params(axis='both', which='major', labelsize=8)
+    ax.tick_params(axis='both', which='minor', labelsize=8)
 
     # Get min_i, min_j from the filtered result
     min_i = bet_filtered.min_i
@@ -238,12 +266,12 @@ def plot_isotherm(bet_filtered, ax=None):
 
     # Plot the isotherm itself.
     ax.scatter(bet_filtered.pressure,
-               bet_filtered.q_adsorbed, marker='D', edgecolors='black', label='Adsorption Isotherm')
+               bet_filtered.q_adsorbed, marker='D', edgecolors='', label='Adsorption Isotherm', alpha = 0.50)
 
     # Plot the part corresponding to the selected linear region
     ax.scatter(bet_filtered.pressure[min_i:min_j + 1],
                bet_filtered.q_adsorbed[min_i:min_j + 1],
-               marker='D', color='red', edgecolors='black', label='Linear Range')
+               marker='D', color='red', edgecolors='', label='Linear Range', alpha = 0.35)
 
     # Plot the spline interpolation
     # ax.plot(bet_filtered.x_range, splev(bet_filtered.x_range,
@@ -252,15 +280,15 @@ def plot_isotherm(bet_filtered, ax=None):
     # plot pchip interpolation
     ax.plot(bet_filtered.x_range,
             pchip_interpolate(bet_filtered.pressure, bet_filtered.q_adsorbed, bet_filtered.x_range), color='magenta',
-            label='Pchip Interpolation')
+            label='P$_{chip}$ Interpolation')
     # plot corresponding pressure
     ax.scatter(bet_filtered.corresponding_pressure_pchip[min_i, min_j], bet_filtered.nm[min_i, min_j], marker='D',
-               color='black', label='Vm Read')
+               color='black', label='V$_m$ Read', alpha=0.50)
 
     # Plot selected Monolayer loading (single point)
     ax.scatter(bet_filtered.calc_pressure[min_i, min_j],
                bet_filtered.nm[min_i, min_j],
-               marker='D', color='yellow', edgecolors='black', label='Vm BET')
+               marker='D', color='yellow', edgecolors='black', label='V$_m$ BET')
 
     # Plot the BET curve derived from BET theory
     ax.plot(bet_filtered.x_range, bet_filtered.bet_curve, c='g', label='BET Fit')
@@ -287,9 +315,11 @@ def plot_roquerol_representation(bet_filtered, ax=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
-    ax.set_title(f"Rouquerol Representation")
-    ax.set_xlabel(r'$P/P_0$')
-    ax.set_ylabel(r'$V(P_0 - P)$')
+    ax.set_title(f"Rouquerol Representation", fontname="Arial", fontsize = '10', fontweight='bold')
+    ax.set_xlabel(r'$P/P_0$', fontname="Arial", fontsize = '10')
+    ax.set_ylabel(r'$V(P_0 - P)$', fontname="Arial", fontsize = '10')
+    ax.tick_params(axis='both', which='major', labelsize=8)
+    ax.tick_params(axis='both', which='minor', labelsize=8)
 
     # Get min_i, min_j from the filtered result
     min_i = bet_filtered.min_i
@@ -297,12 +327,12 @@ def plot_roquerol_representation(bet_filtered, ax=None):
 
     # Plot the main Roquerol representation scatter
     ax.scatter(bet_filtered.pressure,
-               bet_filtered.rouq_y, marker='D', edgecolors='black', label=r'$V(P_0 - P)$')
+               bet_filtered.rouq_y, marker='D', edgecolors='', color='blue', label=r'$V(P_0 - P)$', alpha=0.30)
 
     # Plot the part corresponding to the linear region
     ax.scatter(bet_filtered.pressure[min_i:min_j + 1],
                bet_filtered.rouq_y[min_i:min_j + 1],
-               marker='D', color='red', edgecolors='black', label='Linear Range')
+               marker='D', color='red', edgecolors='', label='Linear Range', alpha=0.50)
 
     ax.legend(prop={'size': 8})
 
@@ -323,9 +353,11 @@ def plot_linear_y(bet_filtered, ax=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
-    ax.set_title(f"Linear Range")
-    ax.set_xlabel(r'$P/P_0$')
-    ax.set_ylabel(r'$P/V(P_0 - P)$')
+    ax.set_title(f"Linear Range", fontname="Arial", fontsize = '10', fontweight = 'bold')
+    ax.set_xlabel(r'$P/P_0$', fontname="Arial", fontsize = '10')
+    ax.set_ylabel(r'$P/V(P_0 - P)$', fontname="Arial", fontsize = '10')
+    ax.tick_params(axis='both', which='major', labelsize=8)
+    ax.tick_params(axis='both', which='minor', labelsize=8)
 
     # Get min_i, min_j from the filtered result
     min_i = bet_filtered.min_i
@@ -334,7 +366,7 @@ def plot_linear_y(bet_filtered, ax=None):
     # Plot the points in the selected linear region
     ax.scatter(bet_filtered.pressure[min_i:min_j + 1],
                bet_filtered.linear_y[min_i:min_j + 1],
-               marker='D', color='r', edgecolors='black')
+               marker='D', color='r', edgecolors='', alpha = 0.50)
 
     # Plot the straight line obtained from the linear regression
     largest_valid_x = max(bet_filtered.pressure[min_i:min_j + 1])
@@ -362,7 +394,7 @@ def plot_linear_y(bet_filtered, ax=None):
     r_eqn = r"$R^2$ = {0:.8f}".format(bet_filtered.fit_rsquared[min_i, min_j])
     ax.text(0.05, 0.9, y_eqn, {'color': 'black',
                                'fontsize': 8}, transform=ax.transAxes)
-    ax.text(0.05, 0.85, r_eqn, {'color': 'black',
+    ax.text(0.05, 0.825, r_eqn, {'color': 'black',
                                 'fontsize': 8}, transform=ax.transAxes)
 
 
@@ -385,9 +417,14 @@ def plot_area_error(bet_filtered, ax=None, ax2=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
-    ax.set_title('Filtered BET areas ')
-    ax2.set_xlabel(r'BET Area $m^2 g^{-1}$')
-    ax2.set_ylabel(r'Percentage Error %')
+    ax.set_title('Filtered BET areas ', fontname="Arial", fontsize = '10', fontweight='bold')
+    ax2.set_xlabel(r'BET Area $m^2 g^{-1}$', fontname="Arial", fontsize = '10')
+    ax2.set_ylabel(r'Percentage Error %', fontname="Arial", fontsize = '10')
+    ax2.yaxis.set_label_coords(-0.1, 0.78)
+    ax.tick_params(axis='both', which='major', labelsize=8)
+    ax.tick_params(axis='both', which='minor', labelsize=8)
+    ax2.tick_params(axis='both', which='major', labelsize=8)
+    ax2.tick_params(axis='both', which='minor', labelsize=8)
 
     x_coords = bet_filtered.valid_bet_areas
     y_coords = bet_filtered.valid_pc_errors
@@ -398,16 +435,16 @@ def plot_area_error(bet_filtered, ax=None, ax2=None):
 
     # Scatter plot of the Error across valid areas
     ax.scatter(x_coords_nonvalid, y_coords_nonvalid, color='r',
-               edgecolors='black', marker='D', picker=5)
+               edgecolors='', marker='D', picker=5, alpha =0.35)
     ax.scatter(bet_filtered.valid_knee_bet_areas,
-               bet_filtered.valid_knee_pc_errors, color='b', edgecolors='black', marker='D', picker=5)
+               bet_filtered.valid_knee_pc_errors, color='b', edgecolors='', marker='D', picker=5, alpha=0.35)
     ax.scatter(bet_filtered.bet_areas[min_i, min_j], bet_filtered.pc_error[min_i, min_j], marker='D', color='yellow',
                edgecolors='black')
 
     ax2.scatter(x_coords_nonvalid, y_coords_nonvalid, color='r',
-               edgecolors='black', marker='D', picker=5)
+               edgecolors='', marker='D', picker=5, alpha = 0.35)
     ax2.scatter(bet_filtered.valid_knee_bet_areas,
-               bet_filtered.valid_knee_pc_errors, color='b', edgecolors='black', marker='D', picker=5)
+               bet_filtered.valid_knee_pc_errors, color='b', edgecolors='', marker='D', picker=5, alpha=0.35)
     ax2.scatter(bet_filtered.bet_areas[min_i, min_j], bet_filtered.pc_error[min_i, min_j], marker='D', color='yellow',
                edgecolors='black')
 
@@ -457,9 +494,11 @@ def plot_monolayer_loadings(bet_filtered, ax=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
-    ax.set_title("Filtered Monolayer-Loadings")
-    ax.set_xlabel(r'$P/P_0$')
-    ax.set_ylabel(r'$N_2$ uptake (STP) $cm^3$ $g^{-1}$')
+    ax.set_title("Filtered Monolayer-Loadings", fontname="Arial", fontsize = '10', fontweight='bold')
+    ax.set_xlabel(r'$P/P_0$', fontname="Arial", fontsize = '10')
+    ax.set_ylabel(r'$N_2$ uptake (STP) $cm^3$ $g^{-1}$', fontname="Arial", fontsize = '10')
+    ax.tick_params(axis='both', which='major', labelsize=8)
+    ax.tick_params(axis='both', which='minor', labelsize=8)
 
     # Get min_i, min_j from the filtered result
     min_i = bet_filtered.min_i
@@ -468,38 +507,38 @@ def plot_monolayer_loadings(bet_filtered, ax=None):
     # Plot the Isotherm itself
     ax.scatter(bet_filtered.pressure,
                bet_filtered.q_adsorbed,
-               marker='D', color='blue', edgecolors='black', label='Adsorption Isotherm')
+               marker='D', color='blue', edgecolors='', label='Adsorption Isotherm', alpha=0.35)
 
     # Plot the fitted spline.
     ax.plot(bet_filtered.x_range,
             pchip_interpolate(bet_filtered.pressure, bet_filtered.q_adsorbed, bet_filtered.x_range), color='magenta',
-            label='Pchip Interpolation')
+            label='P$_{chip}$ Interpolation')
 
     # Plot the valid monolayer loadings.
     ax.scatter(bet_filtered.valid_calc_pressures,
                bet_filtered.valid_nm,
-               marker='D', facecolors='lightgreen', edgecolors='black',
-               label='Valid monolayer loading')
+               marker='D', facecolors='lightgreen', edgecolors='',
+               label='Valid monolayer loading', alpha=0.75)
 
     # Plot the valid optimum linear range
     ax.scatter(bet_filtered.pressure[min_i:min_j + 1],
                bet_filtered.q_adsorbed[min_i:min_j + 1],
-               marker='D', color='red', edgecolors='black', label='Linear Range')
+               marker='D', color='red', edgecolors='', label='Linear Range', alpha=0.35)
 
     # Plot the single optimum Monolayer loading
     ax.scatter(bet_filtered.calc_pressure[min_i, min_j],
                bet_filtered.nm[min_i, min_j],
-               marker='D', color='yellow', edgecolors='black', label='Vm BET')
+               marker='D', color='yellow', edgecolors='black', label='V$_m$ BET')
 
     # Plot the Fit obtained from the BET equation
     ax.plot(bet_filtered.x_range, bet_filtered.bet_curve, c='g', label='BET Fit')
 
     # Set the Xlimits and add a legend
-    ax.set_xlim([-0.001, max(bet_filtered.valid_calc_pressures) * 1.2])
-    ax.set_ylim([0.0, max(bet_filtered.q_adsorbed) * 1.1])
+    ax.set_xlim([-0.001, max(bet_filtered.valid_calc_pressures)])
+    ax.set_ylim([0.0, max(bet_filtered.q_adsorbed)])
 
     ax.autoscale(False)
-    ax.legend(prop={'size': 8})
+    ax.legend(loc=4, prop={'size': 8})
 
 
 def plot_box_and_whisker(bet_filtered, ax=None):
@@ -517,8 +556,10 @@ def plot_box_and_whisker(bet_filtered, ax=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
-    ax.set_title('Distribution of filtered BET Areas')
-    ax.set_ylabel(r'BET Area $m^2 g^{-1}$')
+    ax.set_title('Distribution of filtered BET Areas', fontname="Arial", fontsize = '10', fontweight='bold')
+    ax.set_ylabel(r'BET Area $m^2 g^{-1}$', fontname="Arial", fontsize = '10')
+    ax.tick_params(axis='both', which='major', labelsize=8)
+    ax.tick_params(axis='both', which='minor', labelsize=8)
 
     min_i = bet_filtered.min_i
     min_j = bet_filtered.min_j
@@ -528,11 +569,11 @@ def plot_box_and_whisker(bet_filtered, ax=None):
 
     y = list(set(bet_filtered.valid_knee_bet_areas) - set(y_min))
     x = np.random.normal(1, 0.04, size=len(y))
-    ax.scatter(x, y, marker='D', color='blue', edgecolor='black', alpha=0.5)
+    ax.scatter(x, y, marker='D', color='blue', edgecolor='', alpha=0.35)
 
     y = list(set(bet_filtered.valid_bet_areas) - set(y) - set(y_min))
     x = np.random.normal(1, 0.04, size=len(y))
-    ax.scatter(x, y, alpha=0.5, marker='D', color='red', edgecolor='black')
+    ax.scatter(x, y, alpha=0.35, marker='D', color='red', edgecolor='')
 
     ax.scatter(x_min, y_min, marker='D', color='yellow', edgecolor='black')
 
@@ -542,10 +583,13 @@ def plot_box_and_whisker(bet_filtered, ax=None):
     ax.set_ylim(min(y) - dy, max(y) + dy)
 
     # Make the boxplot of valid areas
-    ax.boxplot(bet_filtered.valid_bet_areas, showfliers=False)
+
+    # median line properties
+    medianprops = dict(linestyle='--', linewidth=1.2, color='black', alpha=0.35)
+
+    ax.boxplot(bet_filtered.valid_bet_areas, showfliers=False, medianprops=medianprops)
 
     # Write BET area
-    called_BET_area = """BET Area =
-{0:0.0f} $m^2/g$""".format(np.around((bet_filtered.bet_areas[min_i, min_j])), decimals=0, out=None)
-    ax.text(0.05, 0.85, called_BET_area, {'color': 'black',
+    called_BET_area = """BET Area = {0:0.0f} $m^2/g$""".format(np.around((bet_filtered.bet_areas[min_i, min_j])), decimals=0, out=None)
+    ax.text(0.05, 0.90, called_BET_area, {'color': 'black',
                                           'fontsize': 8}, transform=ax.transAxes)

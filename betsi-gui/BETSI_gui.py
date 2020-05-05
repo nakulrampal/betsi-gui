@@ -169,22 +169,22 @@ class BETSI_widget(QWidget):
 
         # add a group box containing controls
         self.criteria_box = QGroupBox("BET area selection criteria")
-        self.criteria_box.setMaximumWidth(400)
-        self.criteria_box.setMaximumHeight(700)
+        self.criteria_box.setMaximumWidth(500)
+        self.criteria_box.setMaximumHeight(800)
         self.min_points_label = QLabel(self.criteria_box)
-        self.min_points_label.setText('Min no of points\n in linear region')
+        self.min_points_label.setText('Minimum number of points in the linear region:')
         self.min_points_edit = QLineEdit()
         self.min_points_edit.setMaximumWidth(75)
         self.min_points_slider = QSlider(QtCore.Qt.Horizontal)
-        self.minr2_label = QLabel('Min R2')
+        self.minr2_label = QLabel('Minimum R<sup>2</sup>:')
         self.minr2_edit = QLineEdit()
         self.minr2_edit.setMaximumWidth(75)
         self.minr2_slider = QSlider(QtCore.Qt.Horizontal)
-        self.rouq1_tick = QCheckBox("Rouq 1: Monotonic")
-        self.rouq2_tick = QCheckBox("Rouq 2: Positive C")
-        self.rouq3_tick = QCheckBox("Rouq 3: P in Linear Range")
-        self.rouq4_tick = QCheckBox("Rouq 4: Small Error")
-        self.rouq5_tick = QCheckBox("Rouq 5: End at the Knee")
+        self.rouq1_tick = QCheckBox("Rouquerol criteria 1: Monotonic")
+        self.rouq2_tick = QCheckBox("Rouquerol criteria 2: Positive C")
+        self.rouq3_tick = QCheckBox("Rouquerol criteria 3: Pressure in linear range")
+        self.rouq4_tick = QCheckBox("Rouquerol criteria 4: Small error")
+        self.rouq5_tick = QCheckBox("Rouquerol criteria 5: End at the knee")
         self.rouq4_edit = QLineEdit()
         self.rouq4_edit.setMaximumWidth(75)
         self.rouq4_slider = QSlider(QtCore.Qt.Horizontal)
@@ -504,7 +504,7 @@ class BETSI_widget(QWidget):
         self.results_table.setColumnCount(2)
         self.results_table.setRowCount(1)
         self.results_table.setHorizontalHeaderLabels(
-            ['Relative Pressure \n (cm3/g)', 'Quantity adsorbed \n (p/p0)'])
+            ['Relative pressure (p/p\u2080)', 'Quantity adsorbed (cm\u00B3/g)'])
         self.results_table.setColumnWidth(0, 250)
         self.results_table.setColumnWidth(1, 250)
 
@@ -526,9 +526,10 @@ class BETSI_widget(QWidget):
         self.results_table.setColumnCount(2)
         self.results_table.setRowCount(0)
         self.results_table.setHorizontalHeaderLabels(
-            ['Relative Pressure \n (cm3/g)', 'Quantity adsorbed \n (p/p0)'])
+            ['Relative pressure (p/p\u2080)', 'Quantity adsorbed (cm\u00B3/g)'])
         self.results_table.setColumnWidth(0, 250)
         self.results_table.setColumnWidth(1, 250)
+
 
     def minr2_edit_changed(self):
         value = self.minr2_edit.text()
