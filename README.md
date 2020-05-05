@@ -11,7 +11,7 @@ BET Surface Identification - a program that fully implements the rouquerol crite
 
 ## License
 
-AAMpLify is distributed under the MIT open source license (see [`LICENSE.txt`](LICENSE.txt)).
+BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICENSE.txt)).
 
 ## Acknowledgements
 
