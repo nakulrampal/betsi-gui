@@ -1,6 +1,6 @@
 numpy
 scipy
 matplotlib
-pyqt
+pyqt5-tools
 pandas
 seaborn
