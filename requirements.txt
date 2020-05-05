@@ -1,6 +1,10 @@
 numpy
 scipy
 matplotlib
-pyqt5-tools
+qt
+qtpy
+qtconsole
+qtawesome
+pyqt
 pandas
 seaborn
