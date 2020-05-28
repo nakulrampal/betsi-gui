@@ -406,4 +406,4 @@ def analyse_file(input_file, output_dir=None, **kwargs):
 
 if __name__ == "__main__":
     analyse_file(
-        Path(r"D:\Documents\irmof-10.csv"))
+        Path(r"/Users/johannesosterrieth/Desktop/q_nu1105.csv"))
