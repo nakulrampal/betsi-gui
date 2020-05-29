@@ -390,6 +390,9 @@ class BETSI_widget(QWidget):
             self.current_fig.savefig(
                 str(output_subdir / f'{target_path.stem}_plot.pdf'), bbox_inches='tight')
             plt.show()
+            self.current_fig_2.savefig(
+                    str(output_subdir / f'{target_path.stem}_RD_plots.pdf'))
+            plt.show()
 
     def analyse_directory(self, dir_path):
         """ Run Betsi on all csv files within dir_path. Use current filter config."""

@@ -17,7 +17,7 @@ import matplotlib.font_manager
 import matplotlib as mpl
 
 
-
+mpl.rc('font', family='Arial',size=9)
 def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
     """ Creates 4 regression diagnostics plots in 2 x 2 matrix
     Args:
@@ -68,9 +68,9 @@ def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
 
     # Make new figure
     if fig_2 is None:
-        fig_2 = plt.figure(constrained_layout=True, figsize=(6.10236, 9.72441))
+        fig_2 = plt.figure(constrained_layout=False, figsize=(6.29921, 9.52756))
     mpl.rc('font', family='Arial',size=9)
-    fig_2.suptitle(f"BETSI Analysis for {name}\n")
+    fig_2.suptitle(f"BETSI Regression Diagnostics for {name}\n")
 
     # fig_2.suptitle(f"{name} Regression Diagnostics")
 
@@ -183,7 +183,7 @@ def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
     #hspace = 0.255,
     #wspace = 0.315
 
-    plt.tight_layout()
+    #plt.tight_layout()
     return fig_2
 
 
@@ -201,7 +201,7 @@ def create_matrix_plot(bet_filtered, name, fig=None):
     """
     # Make Isotherm Plot
     if fig is None:
-        fig = plt.figure(figsize=(6.10236, 9.72441))
+        fig = plt.figure(figsize=(6.29921, 9.52756))
 
     #top = 0.91,
     #bottom = 0.07,
@@ -210,8 +210,8 @@ def create_matrix_plot(bet_filtered, name, fig=None):
     #hspace = 1.0,
     #wspace = 0.315
 
-    fig.set_size_inches(6.10236, 9.72441)
-    #fig.suptitle(f"BETSI Analysis for {name}\n", fontname="Arial", fontsize = '11')
+    fig.set_size_inches(6.29921, 9.52756)
+    fig.suptitle(f"BETSI Analysis for {name}\n", fontname="Arial", fontsize = '11')
     fig.subplots_adjust(hspace=1.0, top=0.91, bottom=0.07, left=0.052, right=0.865, wspace=0.315)
 
     gs = gridspec.GridSpec(9, 2, figure=fig)
@@ -249,13 +249,13 @@ def plot_isotherm(bet_filtered, ax=None):
         made.
 
     """
-
     if ax is None:
         # When this is not part of a larger plot:
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
+    mpl.rc('font', family='Arial',size=9)
     ax.set_title(f"Adsorption Isotherm", fontname="Arial", fontsize = '11')
     ax.set_xlabel(r'$\mathregular{P/P_0}$')
     ax.set_ylabel(r'$\mathregular{N_2 uptake}$ (STP) $\mathregular{cm^3 g^{-1}}$')
@@ -321,6 +321,7 @@ def plot_roquerol_representation(bet_filtered, ax=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
+    mpl.rc('font', family='Arial',size=9)
     ax.set_title(f"Rouquerol Representation", fontname="Arial", fontsize = '11')
     ax.set_xlabel(r'$\mathregular{P/P_0}$')
     ax.set_ylabel(r'$\mathregular{N(1-P/P_0)}$', fontname="Arial")
@@ -360,6 +361,7 @@ def plot_linear_y(bet_filtered, ax=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
+    mpl.rc('font', family='Arial',size=9)
     ax.set_title(f"Linear Range", fontname="Arial",fontsize='11')
     ax.set_xlabel(r'$\mathregular{P/P_0}$')
     ax.set_ylabel(r'$\mathregular{P/N(P_0 - P)}$', fontname="Arial", fontsize = '9')
@@ -424,6 +426,7 @@ def plot_area_error(bet_filtered, ax=None, ax2=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
+    mpl.rc('font', family='Arial',size=9)
     ax.set_title('Filtered BET areas ', fontname="Arial")
     ax2.set_xlabel(r'BET Area $\mathregular{m^2 g^{-1}}$', fontname="Arial", fontsize = '9')
     ax2.set_ylabel(r'Percentage Error %', fontname="Arial", fontsize = '9')
@@ -501,6 +504,7 @@ def plot_monolayer_loadings(bet_filtered, ax=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
+    mpl.rc('font', family='Arial',size=9)
     ax.set_title("Filtered Monolayer-Loadings", fontname="Arial")
     ax.set_xlabel(r'$\mathregular{P/P_0}$', fontname="Arial", fontsize = '9')
     ax.set_ylabel(r'$\mathregular{N_2 uptake}$ (STP) $\mathregular{cm^3 g^{-1}}$')
@@ -565,6 +569,7 @@ def plot_box_and_whisker(bet_filtered, ax=None):
         ax = fig.add_subplot(1, 1, 1)
 
     # Set axis details.
+    mpl.rc('font', family='Arial',size=9)
     ax.set_title('Distribution of filtered BET Areas', fontname="Arial")
     ax.set_ylabel(r'BET Area $\mathregular{m^2 g^{-1}}$', fontname="Arial", fontsize = '9')
     ax.tick_params(axis='both', which='major', labelsize=9)
