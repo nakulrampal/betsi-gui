@@ -294,8 +294,8 @@ class BETSI_widget(QWidget):
             if self.current_fig is not None and not plt.fignum_exists(self.current_fig.number):
                 self.current_fig = None
                 self.current_fig_2=None
-            fig = create_matrix_plot(self.bet_filter_result, name=Path(
-                self.target_filepath).stem, fig=self.current_fig)
+            fig = create_matrix_plot(self.bet_filter_result, self.rouq3_tick.isChecked(), self.rouq4_tick.isChecked(),  name=Path(
+                self.target_filepath).stem,  fig=self.current_fig)
             fig_2 = regression_diagnostics_plots(self.bet_filter_result, name=Path(
                 self.target_filepath).stem, fig_2=self.current_fig_2)
             # connect the picker event to the figure

@@ -187,7 +187,7 @@ def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
     return fig_2
 
 
-def create_matrix_plot(bet_filtered, name, fig=None):
+def create_matrix_plot(bet_filtered, rouq3, rouq4, name, fig=None):
     """ Creates all 6 of the key plots in a 2x3 matrix
 
     Args:
@@ -225,9 +225,13 @@ def create_matrix_plot(bet_filtered, name, fig=None):
     ax = fig.add_subplot(gs[3:6,0])
     plot_linear_y(bet_filtered, ax)
 
-    ax = fig.add_subplot(gs[3:4,1:])
-    ax2 = fig.add_subplot(gs[4:6,1:])
-    plot_area_error(bet_filtered, ax, ax2)
+    if not rouq3 and not rouq4:
+        ax = fig.add_subplot(gs[3:4, 1:])
+        ax2 = fig.add_subplot(gs[4:6, 1:])
+        plot_area_error_1(bet_filtered, ax, ax2)
+    else:
+        ax = fig.add_subplot(gs[3:6,1])
+        plot_area_error_2(bet_filtered, ax)
 
     ax = fig.add_subplot(gs[6:9,0])
     plot_monolayer_loadings(bet_filtered, ax)
@@ -407,7 +411,7 @@ def plot_linear_y(bet_filtered, ax=None):
                                 'fontsize': 9}, transform=ax.transAxes)
 
 
-def plot_area_error(bet_filtered, ax=None, ax2=None):
+def plot_area_error_1(bet_filtered, ax=None, ax2=None):
     """ Plot the distribution of valid BET areas, highlight those ending on the `knee` and print
     start and end indices.
 
@@ -487,6 +491,55 @@ def plot_area_error(bet_filtered, ax=None, ax2=None):
     # Set the Y-limit on the errors
     #ax.set_ylim(0, max(y_coords) * 1.1)
 
+
+def plot_area_error_2(bet_filtered, ax=None):
+    """ Plot the distribution of valid BET areas, highlight those ending on the `knee` and print
+    start and end indices.
+
+    Args:
+        bet_filtered: A BETFilterAppliedResults object.
+        ax: Optional matplotlib axis object. If none is provided, an axis for a single subplot is
+        made.
+
+    """
+    min_i = bet_filtered.min_i
+    min_j = bet_filtered.min_j
+
+    if ax is None:
+        # When this is not part of a larger plot:
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1)
+
+    # Set axis details.
+    ax.set_title('Filtered BET areas ', fontname="Arial")
+    ax.set_xlabel(r'BET Area $\mathregular{m^2 g^{-1}}$', fontname="Arial", fontsize = '9')
+    ax.set_ylabel(r'Percentage Error %', fontname="Arial", fontsize = '9')
+    ax.tick_params(axis='both', which='major', labelsize=9)
+    ax.tick_params(axis='both', which='major', labelsize=9)
+
+    x_coords = bet_filtered.valid_bet_areas
+    y_coords = bet_filtered.valid_pc_errors
+    x_coords_nonvalid = np.array(
+        [x for x in x_coords if x not in bet_filtered.valid_knee_bet_areas])
+    y_coords_nonvalid = np.array(
+        [y for y in y_coords if y not in bet_filtered.valid_knee_pc_errors])
+
+    # Scatter plot of the Error across valid areas
+    ax.scatter(x_coords_nonvalid, y_coords_nonvalid, color='red',
+               edgecolors='red', picker=5, alpha=0.5)
+    ax.scatter(bet_filtered.valid_knee_bet_areas,
+               bet_filtered.valid_knee_pc_errors, color='b', edgecolors='b', marker='s', picker=5, alpha=0.50)
+    ax.scatter(bet_filtered.bet_areas[min_i, min_j], bet_filtered.pc_error[min_i, min_j], marker='s', color='yellow',
+               edgecolors='yellow')
+
+    # Add text annotation to each error point.
+    for i, type in enumerate(x_coords):
+        index = f"({bet_filtered.valid_indices[0][i] + 1}," \
+                f" {bet_filtered.valid_indices[1][i] + 1})"
+        plt.text(x_coords[i], y_coords[i], index, fontsize=7, clip_on=True)
+
+    # Set the Y-limit on the errors
+    ax.set_ylim(0, max(y_coords) * 1.1)
 
 def plot_monolayer_loadings(bet_filtered, ax=None):
     """ Plot the distribution of monolayer loadings alonside the Isotherm and fitted spline.
@@ -597,8 +650,9 @@ def plot_box_and_whisker(bet_filtered, ax=None):
         dy = y_min[0]*0.25
         ax.set_ylim(y_min[0] - dy, y_min[0] + dy)
     else:
-        dx = (max(x) - min(x)) * 1
-        ax.set_xlim(min(x) - dx, max(x) + dx)
+        ax.set_xlim([.75, 1.25])
+        #dx = (max(x) - min(x)) * 1
+        #ax.set_xlim(min(x) - dx, max(x) + dx)
         
         if len(y_2)==0:
                 dy = (max(y)-min(y)) * 1
