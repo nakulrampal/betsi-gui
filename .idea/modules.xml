@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/betsi-gui.iml" filepath="$PROJECT_DIR$/.idea/betsi-gui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../betsi/.idea/betsi.iml" filepath="$PROJECT_DIR$/../betsi/.idea/betsi.iml" />
     </modules>
   </component>
 </project>

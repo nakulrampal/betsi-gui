@@ -4,4 +4,4 @@ python:
 install:
   - easy_install distribute
   - pip install -r requirements.txt
-script: cd betsi-gui; python3 BETSI_gui.py
+script: cd betsi; python3 gui.py

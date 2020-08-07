@@ -1,8 +1,0 @@
-{'max_perc_error': 20.0,
- 'min_num_pts': 10,
- 'min_r2': 0.995,
- 'use_rouq1': True,
- 'use_rouq2': True,
- 'use_rouq3': True,
- 'use_rouq4': True,
- 'use_rouq5': False}
