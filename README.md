@@ -82,19 +82,15 @@ The code will run automatically and two windows appear. For a full explanation o
 
 # <img src="docs/images/step-10.png" alt="step-10" style="padding:10px;" width="600"/>
 
-Further, you can interact with the GUI by manually selecting other Rouquerol-permitted BET areas. In the ```Filtered BET areas``` plot, click on one of the other points. All plots will automatically update to the new selected linear region/BET area. The ```active``` plot is always shown in 
-
-<span style="background-color: #000000">Marked text</span> 
-
-yellow.
+Further, you can interact with the GUI by manually selecting other Rouquerol-permitted BET areas. In the ```Filtered BET areas``` plot, click on one of the other points. All plots will automatically update to the new selected linear region/BET area. The ```active``` plot is always shown in yellow.
 
 # <img src="docs/images/step-11.png" alt="step-11" style="padding:10px;" width="600"/>
 
-To output BETSI data, select an output directory and click **Export Results** in the GUI.
+To output BETSI data, select an output directory and click ```Export Results``` in the GUI.
 
 # <img src="docs/images/step-12.png" alt="step-12" style="padding:10px;" width="600"/>
 
-The specified directory will contain *pdf* prints of the two active plots (BETSI analysis and regression diagnostics), a ```.json``` file specifying the filter criteria, a ```.txt``` file featuring a small summary, and a folder containing all matrices that the program uses.
+The specified directory will contain ```.pdf``` prints of the two active plots (BETSI analysis and regression diagnostics), a ```.json``` file specifying the filter criteria, a ```.txt``` file featuring a small summary, and a folder containing all matrices that the program uses.
 
 # <img src="docs/images/step-14.png" alt="step-14" style="padding:10px;" width="600"/>
 
@@ -105,7 +101,7 @@ Analyse a new isotherm in BETSI by clearing the current plot either via ```Tools
 
 ## Test Dataset
 
-A test dataset of isotherms is supplied on this repository. To run the isotherms in BETSI, download the dataset and drag isotherms into the BETSI GUI as described above. If you would like to try BETSI with your own dataset, you will need to convert it first into the same format as the test isotherms: It must be a 2-column .csv file with the relative pressure in the first column and the adsorbed quantity in the second. The first row will not be read as this usually contains the header. You must use an adsorption isotherm only, a desorption swing, or discontinuity in the adsorption from pressure equilibration issues will result in an error, with the PChip interpolation method.
+A test dataset of isotherms is supplied on this repository. To run the isotherms in BETSI, download the dataset and drag isotherms into the BETSI GUI as described above. If you would like to try BETSI with your own dataset, you will need to convert it first into the same format as the test isotherms: It must be a 2-column ```.csv``` file with the relative pressure in the first column and the adsorbed quantity in the second. The first row will not be read as this usually contains the header. You must use an adsorption isotherm only, a desorption swing, or discontinuity in the adsorption from pressure equilibration issues will result in an error, with the PChip interpolation method.
 
 ## License
 
