@@ -46,13 +46,16 @@ Next, to run BETSI, type in the command
 python -m betsi
 ```
 # <img src="docs/images/step-7.png" alt="step-7" style="padding:10px;" width="600"/>
-Run the command, which will prompt the BETSI GUI. This step may take some time. The BETSI GUI will appear with its default settings as laid out in the Rouquerol criteria. Run an isotherm in the GUI by dragging a correct .csv file into the empty space on the right. Test isotherms can be found in the repository. Note that isotherms will only run successfully in BETSI if they are in the same format as the exemplary isotherms.
+Run the command, which will prompt the BETSI GUI. This step may take some time. The BETSI GUI will appear with its default settings as laid out in the Rouquerol criteria. Run an isotherm in the GUI by dragging a correct .csv file into the empty space on the right. Test isotherms can be found in the repository. Note that isotherms will only run successfully in BETSI if they are in the same format as the exemplary isotherms, further information can be found in section Test Dataset below.
 # <img src="docs/images/step-9.png" alt="step-9" style="padding:10px;" width="600"/>
-The code will run automatically and two windows appear.
+The code will run automatically and two windows appear. For a full explanation of all figures, please refer to the Supplementary Information of the manuscript, Section S5. 
 # <img src="docs/images/step-10.png" alt="step-10" style="padding:10px;" width="600"/>
+Further, you can interact with the GUI by manually selecting other Rouquerol-permitted BET areas. In the 'Filtered BET areas' plot, click on one of the other points. All plots will automatically update to the new selected linear region/BET area. The 'active' plot is always shown in yellow.
+# <img src="docs/images/step-11.png" alt="step-11" style="padding:10px;" width="600"/>
 
 
-
+## Test Dataset
+A test dataset of isotherms is supplied on this repository. To run the isotherms in BETSI, download the dataset and drag isotherms into the BETSI GUI as described above. If you would like to try BETSI with your own dataset, you will need to convert it first into the same format as the test isotherms: It must be a 2-column .csv file with the relative pressure in the first column and the adsorbed quantity in the second. The first row will not be read as this usually contains the header. You must use an adsorption isotherm only, a desorption swing, or discontinuity in the adsorption from pressure equilibration issues will result in an error, with the PChip interpolation method.
 ## License
 
 BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICENSE.txt)).
