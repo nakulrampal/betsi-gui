@@ -7,6 +7,9 @@
 BET Surface Identification - a program that fully implements the Rouquerol criteria
 </p>
 
+[![Build Status](https://travis-ci.com/nakulrampal/betsi-gui.svg?token=Z8uG4PAMYmS7Xn1zqF5i&branch=master)](https://travis-ci.com/nakulrampal/betsi-gui)
+<p align="center">
+  
 
 |    | |
 |-----|----------------------------------------------------------------------------|
