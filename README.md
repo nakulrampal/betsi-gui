@@ -19,13 +19,18 @@ BETSI runs on conventional operating systems such as MacOSX, Windows 7 and Ubunt
 python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-gui
 ```
 
+### Python Dependencies
+`betsi-gui` mainly depends on the Python scientific stack.
 
-numpy
-scipy
-Cython
-scikit-learn
-pandas
-seaborn
+```
+numpy==1.19.3
+scipy==1.5.4
+matplotlib==3.2.2
+PyQt5==5.9.2
+pandas==1.1.5
+seaborn==0.11.0
+statsmodels==0.12.1
+```
 
 
 ## License
