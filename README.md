@@ -56,7 +56,8 @@ To output BETSI data, select an output directory and click 'Export Results' in t
 # <img src="docs/images/step-12.png" alt="step-12" style="padding:10px;" width="600"/>
 The specified directory will contain pdf prints of the two active plots (BETSI analysis and regression diagnostics), a .json file specifying the filter criteria, a .txt file featuring a small summary, and a folder containing all matrices that the program uses.
 # <img src="docs/images/step-14.png" alt="step-14" style="padding:10px;" width="600"/>
-
+Analyse a new isotherm in BETSI by clearing the current plot either via Tools-> Clear, or by pressing the hotkey combination CMD/CNTRL+C.
+# <img src="docs/images/step-13.png" alt="step-13" style="padding:10px;" width="600"/>
 
 
 ## Test Dataset
