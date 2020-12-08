@@ -66,7 +66,7 @@ Next, type in the command: ```python -m pip install --extra-index-url https://te
 
 <img src="docs/images/step-6.png" alt="step-6" style="padding:10px;" width="600"/>
 
-### Option 2: using the source code
+### :point_right: Option 2: using the source code
 
 Navigate to the location where you have stored the source code and enter the directory ```betsi-gui```. Once in the directory, run the command ```python setup.py install```
 
