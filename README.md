@@ -82,7 +82,11 @@ The code will run automatically and two windows appear. For a full explanation o
 
 # <img src="docs/images/step-10.png" alt="step-10" style="padding:10px;" width="600"/>
 
-Further, you can interact with the GUI by manually selecting other Rouquerol-permitted BET areas. In the ```Filtered BET areas``` plot, click on one of the other points. All plots will automatically update to the new selected linear region/BET area. The ```active``` plot is always shown in <span style="background-color: #000000">Marked text</span> yellow.
+Further, you can interact with the GUI by manually selecting other Rouquerol-permitted BET areas. In the ```Filtered BET areas``` plot, click on one of the other points. All plots will automatically update to the new selected linear region/BET area. The ```active``` plot is always shown in 
+
+<span style="background-color: #000000">Marked text</span> 
+
+yellow.
 
 # <img src="docs/images/step-11.png" alt="step-11" style="padding:10px;" width="600"/>
 
