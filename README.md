@@ -46,9 +46,11 @@ Next, to run BETSI, type in the command
 python -m betsi
 ```
 # <img src="docs/images/step-7.png" alt="step-7" style="padding:10px;" width="600"/>
-Run the command, which will prompt the BETSI GUI. This step may take some time.
+Run the command, which will prompt the BETSI GUI. This step may take some time. The BETSI GUI will appear with its default settings as laid out in the Rouquerol criteria.
 # <img src="docs/images/step-8.png" alt="step-8" style="padding:10px;" width="600"/>
-You should now be able to see the BETSI GUI with its default settings as laid out by the Rouquerol criteria.
+Run an isotherm in the GUI by dragging a correct .csv file into the empty space on the right. The code will run automatically and two windows will appear.
+# <img src="docs/images/step-9.png" alt="step-9" style="padding:10px;" width="600"/>
+
 
 
 ## License
