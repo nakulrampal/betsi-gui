@@ -39,6 +39,12 @@ Next, type in the command
 ```
 python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-gui
 ```
+# <img src="docs/images/step-6.png" alt="step-6" style="padding:10px;" width="600"/>
+This will install BETSI in the newly created environment and download all the relevant python packages from our test server.
+Next, to run BETSI, type in the command 
+```
+python -m betsi
+```
 ## License
 
 BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICENSE.txt)).
