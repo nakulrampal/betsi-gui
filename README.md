@@ -60,12 +60,18 @@ This will prompt a command terminal in the new environment.
 
 # <img src="docs/images/step-5.png" alt="step-5" style="padding:10px;" width="600"/>
 
-###Option 1:
+### Option 1:
+
 Next, type in the command: ```python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-gui```
 
 # <img src="docs/images/step-6.png" alt="step-6" style="padding:10px;" width="600"/>
 
-###Option 2:
+### Option 2:
+
+Navigate to the location where you have stored the source code and enter the directory ```betsi-gui```. Once in the directory, run the command ```python setup.py install```
+
+To read more about using the command line please visit: [windows](https://www.computerhope.com/issues/chusedos.htm), [linux](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview), [macOS](https://blog.teamtreehouse.com/introduction-to-the-mac-os-x-command-line).
+
 
 This will install BETSI in the newly created environment and download all the relevant python packages from our test server.
 
