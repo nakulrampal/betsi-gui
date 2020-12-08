@@ -31,6 +31,8 @@ Download Anaconda from https://anaconda.org for your operating system. Once you 
 # <img src="docs/images/step-1.png" alt="step-1" style="padding:10px;" width="600"/>
 Next, create a new environment by clicking 'Create' on the bottom left corner. You can give your environment and arbitrary name (we have called ours 'betsi') and select as a package Python 3.7.
 # <img src="docs/images/step-2.png" alt="step-2" style="padding:10px;" width="600"/>
+If you have successfully created a new environment, it should appear under the base environment. Next, click the 'play' button in the newly created environment and select 'Open Terminal'
+# <img src="docs/images/step-4.png" alt="step-4" style="padding:10px;" width="600"/>
 ## License
 
 BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICENSE.txt)).
