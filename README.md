@@ -64,7 +64,7 @@ This will prompt a command terminal in the new environment.
 
 Next, type in the command: ```python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-gui```
 
-# <img src="docs/images/step-6.png" alt="step-6" style="padding:10px;" width="600"/>
+<img src="docs/images/step-6.png" alt="step-6" style="padding:10px;" width="600"/>
 
 ### Option 2:
 
