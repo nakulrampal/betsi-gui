@@ -33,6 +33,12 @@ Next, create a new environment by clicking 'Create' on the bottom left corner. Y
 # <img src="docs/images/step-2.png" alt="step-2" style="padding:10px;" width="600"/>
 If you have successfully created a new environment, it should appear under the base environment. Next, click the 'play' button in the newly created environment and select 'Open Terminal'
 # <img src="docs/images/step-4.png" alt="step-4" style="padding:10px;" width="600"/>
+This will prompt a command terminal in the new environment.
+# <img src="docs/images/step-5.png" alt="step-5" style="padding:10px;" width="600"/>
+Next, type in the command 
+```
+python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-gui
+```
 ## License
 
 BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICENSE.txt)).
