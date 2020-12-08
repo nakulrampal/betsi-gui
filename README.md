@@ -29,7 +29,7 @@ statsmodels==0.12.1
 ## Steps to install BETSI
 Download Anaconda from https://anaconda.org for your operating system. Once you have done so, open the Anaconda Navigator program.
 # <img src="docs/images/step-1.png" alt="step-1" style="padding:10px;" width="600"/>
-
+Next, create a new environment by clicking 'Create' on the bottom left corner. You can give your environment and arbitrary name (we have called ours 'betsi') and select as a package Python 3.7.
 ## License
 
 BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICENSE.txt)).
