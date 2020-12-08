@@ -36,11 +36,11 @@ statsmodels==0.12.1
 ```
 ## Running BETSI from executable
 
-Download the executables for Windows or Linux found in the repositories run them on your machine. This will automatically run the code for you and take you immediately to the Instructions of use found below. If instead you wish to download the source code and install BETSI on your machine, please follow the steps below.
+Download the executables for Windows or Linux found in the repositories run them on your machine. This will automatically run the code for you and take you immediately to the [Instructions of use](#instructions-of-use) found below. If instead you wish to download the source code and install BETSI on your machine, please follow the steps below.
 
 ## Steps to install BETSI
 
-*Estimated installation time*: "**10 minutes**.
+*Estimated installation time*: ***10 minutes***.
 
 Download Anaconda from https://anaconda.org for your operating system. Once you have done so, open the Anaconda Navigator program.
 # <img src="docs/images/step-1.png" alt="step-1" style="padding:10px;" width="600"/>
