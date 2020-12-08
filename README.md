@@ -10,7 +10,13 @@ BET Surface Identification - a program that fully implements the Rouquerol crite
 |License| [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/nakulrampal/github-gui/LICENSE.txt)|
 
 
-## Operating System Requirements 
+## Software Requirements:
+
+### OS Requirements
+This package is supported for *windows*, *macOS* and *Linux*. The package has been tested on the following systems:
++ windows: 10 (10.0.19041)
++ macOS: Mojave (10.14.1)
++ Linux: Ubuntu 16.04
 
 BETSI runs on conventional operating systems such as MacOSX, Windows 7 and Ubuntu 16.04
 
@@ -33,7 +39,9 @@ statsmodels==0.12.1
 Download the executables for Windows or Linux found in the repositories run them on your machine. This will automatically run the code for you and take you immediately to the Instructions of use found below. If instead you wish to download the source code and install BETSI on your machine, please follow the steps below.
 
 ## Steps to install BETSI
-Estimated installation time ca 10 minutes.
+
+*Estimated installation time*: "**10 minutes**.
+
 Download Anaconda from https://anaconda.org for your operating system. Once you have done so, open the Anaconda Navigator program.
 # <img src="docs/images/step-1.png" alt="step-1" style="padding:10px;" width="600"/>
 Next, create a new environment by clicking 'Create' on the bottom left corner. You can give your environment and arbitrary name (we have called ours 'betsi') and select as a package Python 3.7.
