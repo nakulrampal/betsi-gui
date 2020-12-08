@@ -19,12 +19,9 @@ BET Surface Identification - a program that fully implements the Rouquerol crite
 
 ### OS Requirements
 This package is supported for *windows*, *macOS* and *Linux*. The package has been tested on the following systems:
-+ windows: 10 (10.0.19041)
++ Windows: 10 (10.0.19041)
 + macOS: Mojave (10.14.1)
 + Linux: Ubuntu 16.04
-
-BETSI runs on conventional operating systems such as MacOSX, Windows 7 and Ubuntu 16.04
-
 
 ### Python Dependencies
 
@@ -41,7 +38,7 @@ statsmodels==0.12.1
 ```
 ## Running BETSI from executable
 
-Download the executables for Windows or Linux found in the repositories run them on your machine. This will automatically run the code for you and take you immediately to the [Instructions of use](#instructions-of-use) found below. If instead you wish to download the source code and install BETSI on your machine, please follow the steps below.
+Download the executables for *Windows* or *Linux* found in the repositories run them on your machine. This will automatically run the code for you and take you immediately to the [Instructions of use](#instructions-of-use) found below. If instead you wish to download the source code and install BETSI on your machine, please follow the steps below.
 
 ## Steps to install BETSI
 
@@ -66,10 +63,8 @@ This will install BETSI in the newly created environment and download all the re
 
 *Estimated run time*: ***5 minutes***
 
-Next, to run BETSI, type in the command 
-```
-python -m betsi
-```
+Next, to run BETSI, type in the command: ```python -m betsi```
+
 # <img src="docs/images/step-7.png" alt="step-7" style="padding:10px;" width="600"/>
 Run the command, which will prompt the BETSI GUI. This step may take some time. The BETSI GUI will appear with its default settings as laid out in the Rouquerol criteria. Run an isotherm in the GUI by dragging a correct .csv file into the empty space on the right. Test isotherms can be found in the repository. Note that isotherms will only run successfully in BETSI if they are in the same format as the exemplary isotherms, further information can be found in section [Test Dataset](#test-dataset) below.
 # <img src="docs/images/step-9.png" alt="step-9" style="padding:10px;" width="600"/>
