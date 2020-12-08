@@ -45,6 +45,12 @@ Next, to run BETSI, type in the command
 ```
 python -m betsi
 ```
+# <img src="docs/images/step-7.png" alt="step-7" style="padding:10px;" width="600"/>
+Run the command, which will prompt the BETSI GUI. This step may take some time.
+# <img src="docs/images/step-8.png" alt="step-8" style="padding:10px;" width="600"/>
+You should now be able to see the BETSI GUI with its default settings as laid out by the Rouquerol criteria.
+
+
 ## License
 
 BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICENSE.txt)).
