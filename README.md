@@ -1,4 +1,4 @@
-# <img src="docs/images/betsi_logo.PNG" alt="A2ML" style="padding:10px;" width="300"/>
+# <img src="docs/images/betsi_logo.PNG" alt="A2ML" style="padding:10px;" width="800"/>
 BET Surface Identification - a program that fully implements the Rouquerol criteria
 
 
@@ -44,7 +44,7 @@ Download the executables for Windows or Linux found in the repositories run them
 
 Download Anaconda from https://anaconda.org for your operating system. Once you have done so, open the Anaconda Navigator program.
 # <img src="docs/images/step-1.png" alt="step-1" style="padding:10px;" width="600"/>
-Next, create a new environment by clicking 'Create' on the bottom left corner. You can give your environment and arbitrary name (we have called ours 'betsi') and select as a package Python 3.7.
+Next, create a new environment by clicking ***Create*** on the bottom left corner. You can give your environment and arbitrary name (we have called ours ***betsi***) and select as a package ***Python 3.7***.
 # <img src="docs/images/step-2.png" alt="step-2" style="padding:10px;" width="600"/>
 If you have successfully created a new environment, it should appear under the base environment. Next, click the 'play' button in the newly created environment and select 'Open Terminal'
 # <img src="docs/images/step-4.png" alt="step-4" style="padding:10px;" width="600"/>
@@ -58,7 +58,9 @@ python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-g
 This will install BETSI in the newly created environment and download all the relevant python packages from our test server.
 
 ## Instructions of use
-Estimated run time ca 5 minutes.
+
+*Estimated run time*: ***5 minutes***
+
 Next, to run BETSI, type in the command 
 ```
 python -m betsi
