@@ -45,18 +45,25 @@ Download the executables for *Windows* or *Linux* found in the repositories run 
 *Estimated installation time*: ***10 minutes***
 
 Download Anaconda from https://anaconda.org for your operating system. Once you have done so, open the Anaconda Navigator program.
+
 # <img src="docs/images/step-1.png" alt="step-1" style="padding:10px;" width="600"/>
-Next, create a new environment by clicking **Create** on the bottom left corner. You can give your environment and arbitrary name (we have called ours **betsi**) and select as a package **Python 3.7**.
+
+Next, create a new environment by clicking ```Create``` on the bottom left corner. You can give your environment and arbitrary name (we have called ours ```betsi```) and select as a package ```Python 3.7```.
+
 # <img src="docs/images/step-2.png" alt="step-2" style="padding:10px;" width="600"/>
-If you have successfully created a new environment, it should appear under the base environment. Next, click the :arrow_forward: button in the newly created environment and select **Open Terminal**
+
+If you have successfully created a new environment, it should appear under the base environment. Next, click the :arrow_forward: button in the newly created environment and select ```Open Terminal```
+
 # <img src="docs/images/step-4.png" alt="step-4" style="padding:10px;" width="600"/>
+
 This will prompt a command terminal in the new environment.
+
 # <img src="docs/images/step-5.png" alt="step-5" style="padding:10px;" width="600"/>
-Next, type in the command: 
-```
-python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-gui
-```
+
+Next, type in the command: ```python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-gui```
+
 # <img src="docs/images/step-6.png" alt="step-6" style="padding:10px;" width="600"/>
+
 This will install BETSI in the newly created environment and download all the relevant python packages from our test server.
 
 ## Instructions of use
@@ -67,7 +74,7 @@ Next, to run BETSI, type in the command: ```python -m betsi```
 
 # <img src="docs/images/step-7.png" alt="step-7" style="padding:10px;" width="600"/>
 
-Run the command, which will prompt the BETSI GUI. This step may take some time. The BETSI GUI will appear with its default settings as laid out in the Rouquerol criteria. Run an isotherm in the GUI by dragging a correct .csv file into the empty space on the right. Test isotherms can be found in the repository. Note that isotherms will only run successfully in BETSI if they are in the same format as the exemplary isotherms, further information can be found in section [Test Dataset](#test-dataset) below.
+Run the command, which will prompt the BETSI GUI. This step may take some time. The BETSI GUI will appear with its default settings as laid out in the Rouquerol criteria. Run an isotherm in the GUI by dragging a correct ```.csv``` file into the empty space on the right. Test isotherms can be found in the repository. Note that isotherms will only run successfully in BETSI if they are in the same format as the exemplary isotherms, further information can be found in section [Test Dataset](#test-dataset) below.
 
 # <img src="docs/images/step-9.png" alt="step-9" style="padding:10px;" width="600"/>
 
@@ -75,7 +82,7 @@ The code will run automatically and two windows appear. For a full explanation o
 
 # <img src="docs/images/step-10.png" alt="step-10" style="padding:10px;" width="600"/>
 
-Further, you can interact with the GUI by manually selecting other Rouquerol-permitted BET areas. In the **Filtered BET areas** plot, click on one of the other points. All plots will automatically update to the new selected linear region/BET area. The **active** plot is always shown in yellow.
+Further, you can interact with the GUI by manually selecting other Rouquerol-permitted BET areas. In the ```Filtered BET areas``` plot, click on one of the other points. All plots will automatically update to the new selected linear region/BET area. The ```active``` plot is always shown in <span style="background-color: #FFFF00">Marked text</span>yellow.
 
 # <img src="docs/images/step-11.png" alt="step-11" style="padding:10px;" width="600"/>
 
