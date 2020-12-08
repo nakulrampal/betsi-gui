@@ -11,10 +11,12 @@ BET Surface Identification - a program that fully implements the rouquerol crite
 
 
 ## Operating System Requirements 
+
 BETSI runs on conventional operating systems such as MacOSX, Windows 7 and Ubuntu 16.04
 
 
 ### Python Dependencies
+
 `betsi-gui` mainly depends on the Python scientific stack.
 
 ```
@@ -26,7 +28,12 @@ pandas==1.1.5
 seaborn==0.11.0
 statsmodels==0.12.1
 ```
+## Running BETSI from executable
+
+Download the executables for Windows or Linux found in the repositories run them on your machine. This will automatically run the code for you and take you immediately to the Instructions of use found below. If instead you wish to download the source code and install BETSI on your machine, please follow the steps below.
+
 ## Steps to install BETSI
+
 Download Anaconda from https://anaconda.org for your operating system. Once you have done so, open the Anaconda Navigator program.
 # <img src="docs/images/step-1.png" alt="step-1" style="padding:10px;" width="600"/>
 Next, create a new environment by clicking 'Create' on the bottom left corner. You can give your environment and arbitrary name (we have called ours 'betsi') and select as a package Python 3.7.
@@ -41,6 +48,9 @@ python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-g
 ```
 # <img src="docs/images/step-6.png" alt="step-6" style="padding:10px;" width="600"/>
 This will install BETSI in the newly created environment and download all the relevant python packages from our test server.
+
+## Instructions of use
+
 Next, to run BETSI, type in the command 
 ```
 python -m betsi
@@ -61,7 +71,9 @@ Analyse a new isotherm in BETSI by clearing the current plot either via Tools-> 
 
 
 ## Test Dataset
+
 A test dataset of isotherms is supplied on this repository. To run the isotherms in BETSI, download the dataset and drag isotherms into the BETSI GUI as described above. If you would like to try BETSI with your own dataset, you will need to convert it first into the same format as the test isotherms: It must be a 2-column .csv file with the relative pressure in the first column and the adsorbed quantity in the second. The first row will not be read as this usually contains the header. You must use an adsorption isotherm only, a desorption swing, or discontinuity in the adsorption from pressure equilibration issues will result in an error, with the PChip interpolation method.
+
 ## License
 
 BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICENSE.txt)).
