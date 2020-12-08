@@ -1,4 +1,7 @@
-# <img src="docs/images/betsi_logo.PNG" alt="A2ML" style="padding:10px;" width="800"/>
+# 
+<p align="center">
+  <img src="docs/images/betsi_logo.PNG" alt="A2ML" style="padding:10px;" width="800"/>
+</p>
 BET Surface Identification - a program that fully implements the Rouquerol criteria
 
 
