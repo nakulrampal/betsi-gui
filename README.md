@@ -60,13 +60,13 @@ This will prompt a command terminal in the new environment.
 
 # <img src="docs/images/step-5.png" alt="step-5" style="padding:10px;" width="600"/>
 
-### Option 1:
+### :star: Option 1: via ```pypi```
 
 Next, type in the command: ```python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-gui```
 
 <img src="docs/images/step-6.png" alt="step-6" style="padding:10px;" width="600"/>
 
-### Option 2:
+### Option 2: using the source code
 
 Navigate to the location where you have stored the source code and enter the directory ```betsi-gui```. Once in the directory, run the command ```python setup.py install```
 
