@@ -52,6 +52,11 @@ The code will run automatically and two windows appear. For a full explanation o
 # <img src="docs/images/step-10.png" alt="step-10" style="padding:10px;" width="600"/>
 Further, you can interact with the GUI by manually selecting other Rouquerol-permitted BET areas. In the 'Filtered BET areas' plot, click on one of the other points. All plots will automatically update to the new selected linear region/BET area. The 'active' plot is always shown in yellow.
 # <img src="docs/images/step-11.png" alt="step-11" style="padding:10px;" width="600"/>
+To output BETSI data, select an output directory and click 'Export Results' in the GUI.
+# <img src="docs/images/step-12.png" alt="step-12" style="padding:10px;" width="600"/>
+The specified directory will contain pdf prints of the two active plots (BETSI analysis and regression diagnostics), a .json file specifying the filter criteria, a .txt file featuring a small summary, and a folder containing all matrices that the program uses.
+# <img src="docs/images/step-14.png" alt="step-14" style="padding:10px;" width="600"/>
+
 
 
 ## Test Dataset
