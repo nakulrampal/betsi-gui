@@ -66,17 +66,29 @@ This will install BETSI in the newly created environment and download all the re
 Next, to run BETSI, type in the command: ```python -m betsi```
 
 # <img src="docs/images/step-7.png" alt="step-7" style="padding:10px;" width="600"/>
+
 Run the command, which will prompt the BETSI GUI. This step may take some time. The BETSI GUI will appear with its default settings as laid out in the Rouquerol criteria. Run an isotherm in the GUI by dragging a correct .csv file into the empty space on the right. Test isotherms can be found in the repository. Note that isotherms will only run successfully in BETSI if they are in the same format as the exemplary isotherms, further information can be found in section [Test Dataset](#test-dataset) below.
+
 # <img src="docs/images/step-9.png" alt="step-9" style="padding:10px;" width="600"/>
+
 The code will run automatically and two windows appear. For a full explanation of all figures, please refer to the Supplementary Information of the manuscript, Section S5. 
+
 # <img src="docs/images/step-10.png" alt="step-10" style="padding:10px;" width="600"/>
-Further, you can interact with the GUI by manually selecting other Rouquerol-permitted BET areas. In the 'Filtered BET areas' plot, click on one of the other points. All plots will automatically update to the new selected linear region/BET area. The 'active' plot is always shown in yellow.
+
+Further, you can interact with the GUI by manually selecting other Rouquerol-permitted BET areas. In the **Filtered BET areas** plot, click on one of the other points. All plots will automatically update to the new selected linear region/BET area. The **active** plot is always shown in yellow.
+
 # <img src="docs/images/step-11.png" alt="step-11" style="padding:10px;" width="600"/>
-To output BETSI data, select an output directory and click 'Export Results' in the GUI.
+
+To output BETSI data, select an output directory and click **Export Results** in the GUI.
+
 # <img src="docs/images/step-12.png" alt="step-12" style="padding:10px;" width="600"/>
-The specified directory will contain pdf prints of the two active plots (BETSI analysis and regression diagnostics), a .json file specifying the filter criteria, a .txt file featuring a small summary, and a folder containing all matrices that the program uses.
+
+The specified directory will contain *pdf* prints of the two active plots (BETSI analysis and regression diagnostics), a ```.json``` file specifying the filter criteria, a ```.txt``` file featuring a small summary, and a folder containing all matrices that the program uses.
+
 # <img src="docs/images/step-14.png" alt="step-14" style="padding:10px;" width="600"/>
-Analyse a new isotherm in BETSI by clearing the current plot either via Tools-> Clear, or by pressing the hotkey combination CMD/CNTRL+C.
+
+Analyse a new isotherm in BETSI by clearing the current plot either via ```Tools-> Clear```, or by pressing the hotkey combination ```CMD/CNTRL+C```.
+
 # <img src="docs/images/step-13.png" alt="step-13" style="padding:10px;" width="600"/>
 
 
