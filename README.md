@@ -31,7 +31,7 @@ pandas==1.1.5
 seaborn==0.11.0
 statsmodels==0.12.1
 ```
-
+# <img src="docs/images/step-1.PNG" alt="step-1" style="padding:10px;" width="300"/>
 
 ## License
 
