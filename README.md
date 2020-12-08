@@ -73,7 +73,7 @@ Navigate to the location where you have stored the source code and enter the dir
 To read more about using the command line please visit: [windows](https://www.computerhope.com/issues/chusedos.htm), [linux](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview), [macOS](https://blog.teamtreehouse.com/introduction-to-the-mac-os-x-command-line).
 
 
-This will install BETSI in the newly created environment and download all the relevant python packages from our test server.
+# This will install BETSI in the newly created environment and download all the relevant python packages from our test server.
 
 ## Instructions of use
 
