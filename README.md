@@ -1,7 +1,7 @@
 # 
 <p align="center">
   <img src="docs/images/betsi_logo.PNG" alt="A2ML" style="padding:10px;" width="800"/>
-</p>
+
 BET Surface Identification - a program that fully implements the Rouquerol criteria
 
 
@@ -12,6 +12,7 @@ BET Surface Identification - a program that fully implements the Rouquerol crite
 |Activity| [![Commit Activity](https://img.shields.io/github/commit-activity/m/nakulrampal/betsi-gui)](https://github.com/nakulrampal/betsi-gui/pulse)|
 |License| [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/nakulrampal/github-gui/LICENSE.txt)|
 
+</p>
 
 ## Software Requirements:
 
