@@ -3,9 +3,9 @@
   <img src="docs/images/betsi_logo.PNG" alt="A2ML" style="padding:10px;" width="800"/>
 </p>  
 
-<h2 align="center">
+<p align="center">
 BET Surface Identification - a program that fully implements the Rouquerol criteria
-</h2>
+</p>
 
 |    | |
 |-----|----------------------------------------------------------------------------|
