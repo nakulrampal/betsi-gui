@@ -60,9 +60,12 @@ This will prompt a command terminal in the new environment.
 
 # <img src="docs/images/step-5.png" alt="step-5" style="padding:10px;" width="600"/>
 
+###Option 1:
 Next, type in the command: ```python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-gui```
 
 # <img src="docs/images/step-6.png" alt="step-6" style="padding:10px;" width="600"/>
+
+###Option 2:
 
 This will install BETSI in the newly created environment and download all the relevant python packages from our test server.
 
