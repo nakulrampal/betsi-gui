@@ -12,10 +12,22 @@ BET Surface Identification - a program that fully implements the rouquerol crite
 
 ## Operating System Requirements 
 BETSI runs on conventional operating systems such as MacOSX, Windows 7 and Ubuntu 16.04
+
 ## Installation Guide
-'''
+
+```
 python -m pip install --extra-index-url https://testpypi.python.org/pypi betsi-gui
-'''
+```
+
+
+numpy
+scipy
+Cython
+scikit-learn
+pandas
+seaborn
+
+
 ## License
 
 BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICENSE.txt)).
