@@ -15,6 +15,14 @@ BET Surface Identification - a program that fully implements the Rouquerol crite
 
 </h3>
 
+<p align="center">
+
+📣:loudspeaker: IMPORTANT:  Running BETSI from an executable 📣:loudspeaker:
+
+ Download the executables for *Windows* or *Linux* found in the repositories and run them on your machine. This will automatically run the code for you and take you immediately to the [Instructions of use](#instructions-of-use) found below. If instead you wish to download the source code and install BETSI on your machine, please follow the steps below.
+
+</p>
+
 ## Software Requirements
 
 ### OS Requirements
@@ -36,10 +44,6 @@ pandas==1.1.5
 seaborn==0.11.0
 statsmodels==0.12.1
 ```
-## Running BETSI from an executable
-
-Download the executables for *Windows* or *Linux* found in the repositories and run them on your machine. This will automatically run the code for you and take you immediately to the [Instructions of use](#instructions-of-use) found below. If instead you wish to download the source code and install BETSI on your machine, please follow the steps below.
-
 ## Steps to install BETSI
 
 *Estimated installation time*: ***10 minutes***
