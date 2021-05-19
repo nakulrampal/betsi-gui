@@ -16,7 +16,7 @@ BET Surface Identification - a program that fully implements the Rouquerol crite
 </h3>
 
 <p align="center">
-  <img src="docs/images/executables-banner.PNG" alt="banner" style="padding:2px;" width="750"/>
+  <img src="docs/images/executables-banner.PNG" alt="banner" style="padding:2px;" width="550"/>
 </p>
 
 ## Software Requirements:
