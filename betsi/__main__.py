@@ -1,3 +1,7 @@
-from gui import runbetsi
+from betsi.gui import runbetsi
 
-runbetsi()  # pylint: disable=no-value-for-parameter
+def main():
+    runbetsi()  # pylint: disable=no-value-for-parameter
+    
+if __name__ == "__main__":
+    main()

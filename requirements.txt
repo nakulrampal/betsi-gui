@@ -1,6 +1,7 @@
-numpy
-scipy
-matplotlib
-pyqt==5.9.2
-pandas
-seaborn
+numpy==1.19.3
+scipy==1.5.4
+matplotlib==3.2.2
+PyQt5==5.9.2
+pandas==1.1.5
+seaborn==0.11.0
+statsmodels==0.12.1
