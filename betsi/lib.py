@@ -14,8 +14,8 @@ from matplotlib import pyplot as plt
 from scipy.interpolate import splev
 from scipy.optimize import minimize
 
-from plotting import create_matrix_plot,regression_diagnostics_plots
-from utils import *
+from betsi.plotting import create_matrix_plot,regression_diagnostics_plots
+from betsi.utils import *
 from pprint import pprint
 from scipy.interpolate import splrep, pchip_interpolate
 matplotlib.use('Qt5Agg')

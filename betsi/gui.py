@@ -16,8 +16,8 @@ import traceback
 
 # core lib
 plt.ion()
-from lib import *
-from plotting import *
+from betsi.lib import *
+from betsi.plotting import *
 
 
 class BETSI_gui(QMainWindow):
