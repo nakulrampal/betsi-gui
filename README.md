@@ -123,3 +123,9 @@ BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICE
 ## Acknowledgements
 
 Main Developers: James Rampersad, Johannes W. M. Osterrieth, and Nakul R
+
+This work is supported by:
+* [Cambridge International Scholarship](https://www.cambridgetrust.org/) funded by the Cambridge Commonwealth, European & International Trust;
+* [Trinity-Henry Barlow Scholarship](https://www.trin.cam.ac.uk/) (Honorary) funded by Trinity College, Cambridge.
+
+<img src="docs/images/a2ml_logo.png" alt="A2ML" style="padding:10px;" width="150"/>
