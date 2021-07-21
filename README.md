@@ -122,7 +122,7 @@ BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICE
 
 ## Acknowledgements
 
-Main Developers: James Rampersad, Johannes W. M. Osterrieth, and Nakul R
+Main Developers: James Rampersad, Johannes W. M. Osterrieth, and Nakul Rampal
 
 This work is supported by:
 * [Cambridge International Scholarship](https://www.cambridgetrust.org/) funded by the Cambridge Commonwealth, European & International Trust;
