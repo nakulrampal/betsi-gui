@@ -40,6 +40,10 @@ pandas==1.1.5
 seaborn==0.11.0
 statsmodels==0.12.1
 ```
+## Running BETSI from an executable
+
+Download the executables for *Windows* or *Linux* found in the repositories run them on your machine. This will automatically run the code for you and take you immediately to the [Instructions of use](#instructions-of-use) found below. If instead you wish to download the source code and install BETSI on your machine, please follow the steps below.
+
 ## Steps to install BETSI
 
 *Estimated installation time*: ***10 minutes***
@@ -68,7 +72,7 @@ Next, type in the command: ```pip install -i https://test.pypi.org/simple/ betsi
 
 ### :point_right: Option 2: using the source code
 
-Navigate to the location where you have stored the source code and enter the directory ```betsi-gui```. Once in the directory, run the command ```python setup.py install```
+Navigate to the location where you have stored the source code and enter the directory ```betsi-gui```. Once in the directory, run the command ```python setup.py install```, followed by the command ```pip install .```
 
 To read more about using the command line please visit: [windows](https://www.computerhope.com/issues/chusedos.htm), [linux](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview), [macOS](https://blog.teamtreehouse.com/introduction-to-the-mac-os-x-command-line).
 
@@ -118,14 +122,4 @@ BETSI is distributed under the MIT open source license (see [`LICENSE.txt`](LICE
 
 ## Acknowledgements
 
-Main Developers: James Rampersad, Johannes W. M. Osterrieth, and Nakul Rampal
-
-This work is supported by:
-* [Cambridge International Scholarship](https://www.cambridgetrust.org/) funded by the Cambridge Commonwealth, European & International Trust;
-* [Trinity-Henry Barlow Scholarship](https://www.trin.cam.ac.uk/) (Honorary) funded by Trinity College, Cambridge.
-
-<img src="docs/images/a2ml_logo.png" alt="A2ML" style="padding:10px;" width="150"/>
-
-
-
-
+Main Developers: James Rampersad, Johannes W. M. Osterrieth, and Nakul R
