@@ -1,6 +1,6 @@
 # 
 <p align="center">
-  <img src="docs/images/BETSI-logo.png" alt="A2ML" style="padding:10px;" width="700"/>
+  <img src="docs/images/BETSI-logo.jpeg" alt="A2ML" style="padding:10px;" width="700"/>
 </p>  
 
 <h3 align="center">
