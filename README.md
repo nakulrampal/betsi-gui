@@ -8,11 +8,9 @@ BET Surface Identification - a program that fully implements the Rouquerol crite
 </p>
 -->
 <h3 align="center">
-
 [![Build Status](https://travis-ci.com/nakulrampal/betsi-gui.svg?token=Z8uG4PAMYmS7Xn1zqF5i&branch=master)](https://travis-ci.com/nakulrampal/betsi-gui)
 [![Documentation Status](https://readthedocs.org/projects/aamplify/badge/?version=latest)](https://aamplify.readthedocs.io/en/latest/?badge=latest) 
 [![Gitter](https://badges.gitter.im/betsi-gui/community.svg)](https://gitter.im/betsi-gui/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)  [![Commit Activity](https://img.shields.io/github/commit-activity/m/nakulrampal/betsi-gui)](https://github.com/nakulrampal/betsi-gui/pulse)  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/nakulrampal/github-gui/LICENSE.txt)
-
 </h3>
 
 <p align="center">
