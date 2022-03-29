@@ -3,7 +3,7 @@
   <img src="docs/images/BETSI-logo.png" alt="A2ML" style="padding:10px;" width="700"/>
 </p>  
 
-##
+## <img src="docs/images/BETSI-logo.png" alt="A2ML" style="padding:10px;" width="700"/>
 
 <h3 align="center">
 
