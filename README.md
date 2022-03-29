@@ -3,8 +3,6 @@
   <img src="docs/images/BETSI-logo.png" alt="A2ML" style="padding:10px;" width="700"/>
 </p>  
 
-## <img src="docs/images/BETSI-logo.png" alt="A2ML" style="padding:10px;" width="700"/>
-
 <h3 align="center">
 
 [![Build Status](https://travis-ci.com/nakulrampal/betsi-gui.svg?token=Z8uG4PAMYmS7Xn1zqF5i&branch=master)](https://travis-ci.com/nakulrampal/betsi-gui)
