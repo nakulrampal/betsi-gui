@@ -71,7 +71,7 @@ def regression_diagnostics_plots(bet_filtered, name, fig_2=None):
     if fig_2 is None:
         fig_2 = plt.figure(constrained_layout=False, figsize=(6.29921, 9.52756))
     mpl.rc('font', family='Arial',size=9)
-    fig_2.suptitle(f"BETSI Regression Diagnostics for {name}\n")
+    fig_2.suptitle(f"BETSI Regression Diagnostics for {name}, (Adsorbate: {bet_filtered.adsorbate})\n")
 
     # "Residual vs fitted" plot
     resid_vs_fit = fig_2.add_subplot(2, 2, 1)
@@ -174,7 +174,7 @@ def create_matrix_plot(bet_filtered, rouq3, rouq4, name, fig=None):
         fig = plt.figure(figsize=(6.29921, 9.52756))
 
     fig.set_size_inches(6.29921, 9.52756)
-    fig.suptitle(f"BETSI Analysis for {name}\n", fontname="Arial", fontsize = '11')
+    fig.suptitle(f"BETSI Analysis for {name}, (Adsorbate: {bet_filtered.adsorbate})\n", fontname="Arial", fontsize = '11')
     fig.subplots_adjust(hspace=1.0, top=0.91, bottom=0.07, left=0.052, right=0.865, wspace=0.315)
 
     gs = gridspec.GridSpec(9, 2, figure=fig)
@@ -193,10 +193,20 @@ def create_matrix_plot(bet_filtered, rouq3, rouq4, name, fig=None):
 
     # Plot "Filtered BET areas"
     if not rouq3 and not rouq4:
-        ax = fig.add_subplot(gs[3:4, 1:])
-        ax2 = fig.add_subplot(gs[4:6, 1:])
-        # Plots a figure with a break in the y-axis
-        plot_area_error_1(bet_filtered, ax, ax2)
+        ## New lines added
+        x_coords = bet_filtered.valid_bet_areas
+        y_coords = bet_filtered.valid_pc_errors
+        pc_error_higher_than_290_indexes = np.where(y_coords > 290)[0]
+        y_coords_lower_than_290 = np.delete(y_coords, pc_error_higher_than_290_indexes)
+        if not (len(y_coords_lower_than_290) == 0 or len(pc_error_higher_than_290_indexes) == 0):
+            ax = fig.add_subplot(gs[3:4, 1:])
+            ax2 = fig.add_subplot(gs[4:6, 1:])
+            # Plots a figure with a break in the y-axis
+            plot_area_error_1(bet_filtered, ax, ax2)
+        else:
+            ax = fig.add_subplot(gs[3:6,1])
+            # Plots a figure with NO break in the y-axis
+            plot_area_error_2(bet_filtered, ax)
     else:
         ax = fig.add_subplot(gs[3:6,1])
         # Plots a figure with NO break in the y-axis
@@ -295,7 +305,7 @@ def plot_roquerol_representation(bet_filtered, ax=None):
     ax.scatter(bet_filtered.pressure[min_j+1:], bet_filtered.rouq_y[min_j+1:], edgecolors='black', color='black', alpha=0.5)
 
     # Plot the part corresponding to the linear region
-    ax.scatter(bet_filtered.pressure[min_i:min_j + 1], bet_filtered.rouq_y[min_i:min_j + 1], marker='s', color='red', edgecolors='', label='Linear Range', alpha=0.50)
+    ax.scatter(bet_filtered.pressure[min_i:min_j + 1], bet_filtered.rouq_y[min_i:min_j + 1], marker='s', color='red', edgecolors='none', label='Linear Range', alpha=0.50)
 
     # Add a legend
     ax.legend(prop={'size': 9})
@@ -327,8 +337,31 @@ def plot_linear_y(bet_filtered, ax=None):
     min_i = bet_filtered.min_i
     min_j = bet_filtered.min_j
 
-    # Plot the points in the selected linear region
-    ax.scatter(bet_filtered.pressure[min_i:min_j + 1], bet_filtered.linear_y[min_i:min_j + 1], marker='s', color='r', edgecolors='red', alpha = 0.50)
+    ### Plot the points in the selected linear region
+    ##ax.scatter(bet_filtered.pressure[min_i:min_j + 1], bet_filtered.linear_y[min_i:min_j + 1], marker='s', color='r', edgecolors='red', label='Interpolated Points', alpha = 0.50)
+
+    ## Detect data points that were in the original adsorption data
+    if  bet_filtered.comments_to_data['interpolated_points_added']:
+        # Plot the points in the selected linear region
+        ax.scatter(bet_filtered.pressure[min_i:min_j + 1], bet_filtered.linear_y[min_i:min_j + 1], marker='s', color='green', edgecolors='green', label='Interpolated Points', alpha = 0.50)
+        
+        ###original_pressure_points_used = [x for x in bet_filtered.pressure[min_i:min_j + 1] if x in bet_filtered.original_pressure_data]
+        original_pressure_points_used = [x for x in bet_filtered.original_pressure_data if bet_filtered.pressure[min_i] <= x <= bet_filtered.pressure[min_j]]
+        original_points_indexes = []
+        for x in original_pressure_points_used:
+           ##original_points_indexes.append(np.where(bet_filtered.pressure[min_i:min_j + 1] == x)[0][0])
+           original_points_indexes.append(np.where(abs((bet_filtered.pressure[min_i:min_j + 1]-x)/x) * 100 < 0.01)[0][0])
+        original_linear_y_points_used = bet_filtered.linear_y[min_i:min_j + 1][original_points_indexes]
+        if len(original_pressure_points_used) != 0:
+            ax.scatter(original_pressure_points_used, original_linear_y_points_used, marker='s', color='red', edgecolors='red', label='Original Points', alpha = 0.50)
+            # Add a legend
+            ax.autoscale(False)
+            ax.legend(loc=4, prop={'size': 9})
+    else:
+        # Plot the points in the selected linear region
+        ax.scatter(bet_filtered.pressure[min_i:min_j + 1], bet_filtered.linear_y[min_i:min_j + 1], marker='s', color='r', edgecolors='red', label='Interpolated Points', alpha = 0.50)
+
+
 
     # Plot the straight line obtained from the linear regression
     largest_valid_x = max(bet_filtered.pressure[min_i:min_j + 1])
@@ -350,7 +383,8 @@ def plot_linear_y(bet_filtered, ax=None):
 
     # Print the equation of the straight line.
     ax.yaxis.set_major_formatter(FormatStrFormatter('%.1E'))
-    y_eqn = r"y = {0:.8f}$x$ + {1:.8f}".format(bet_filtered.fit_grad[min_i, min_j], bet_filtered.fit_intercept[min_i, min_j])
+    ##y_eqn = r"y = {0:.8f}$x$ + {1:.8f}".format(bet_filtered.fit_grad[min_i, min_j], bet_filtered.fit_intercept[min_i, min_j])
+    y_eqn = r"y = {0:0.4e}$x$ + {1:0.4e}".format(bet_filtered.fit_grad[min_i, min_j], bet_filtered.fit_intercept[min_i, min_j])
     r_eqn = r"$R^2$ = {0:.8f}".format(bet_filtered.fit_rsquared[min_i, min_j])
     ax.text(0.05, 0.9, y_eqn, {'color': 'black', 'fontsize': 9}, transform=ax.transAxes)
     ax.text(0.05, 0.825, r_eqn, {'color': 'black', 'fontsize': 9}, transform=ax.transAxes)
@@ -365,6 +399,7 @@ def plot_area_error_1(bet_filtered, ax=None, ax2=None):
         ax: Optional matplotlib axis object. If none is provided, an axis for a single subplot is made.
 
     """
+     
     min_i = bet_filtered.min_i
     min_j = bet_filtered.min_j
 
@@ -383,13 +418,38 @@ def plot_area_error_1(bet_filtered, ax=None, ax2=None):
     ax.tick_params(axis='both', which='minor', labelsize=9)
     ax2.tick_params(axis='both', which='major', labelsize=9)
     ax2.tick_params(axis='both', which='minor', labelsize=9)
-
+    
     x_coords = bet_filtered.valid_bet_areas
     y_coords = bet_filtered.valid_pc_errors
-    x_coords_nonvalid = np.array([x for x in x_coords if x not in bet_filtered.valid_knee_bet_areas])
-    y_coords_nonvalid = np.array([y for y in y_coords if y not in bet_filtered.valid_knee_pc_errors])
+    
+    pc_error_higher_than_290_indexes = np.where(y_coords > 290)[0]
+    y_coords_lower_than_290 = np.delete(y_coords, pc_error_higher_than_290_indexes)
+    
+    ##x_coords_nonvalid = np.array([x for x in x_coords if x not in bet_filtered.valid_knee_bet_areas])
+    ##y_coords_nonvalid = np.array([y for y in y_coords if y not in bet_filtered.valid_knee_pc_errors])
+    ## New lines added
+    ## Find indices that are in valid_indices but not in valid_knee_indices
+    temp_x = []
+    temp_y = []
+    for i in range(len(bet_filtered.valid_indices[0])):
+        a = [bet_filtered.valid_indices[0][i], bet_filtered.valid_indices[1][i]]
+        temp_checker = 0
+        for j in range(len(bet_filtered.valid_knee_indices[0])):
+            b = [bet_filtered.valid_knee_indices[0][j], bet_filtered.valid_knee_indices[1][j]]
+            if a==b:
+                temp_checker = 1
+        if temp_checker == 0:
+            temp_x.append(a[0])
+            temp_y.append(a[1])
+    bet_filtered.valid_indeces_but_not_knee = np.array([temp_x,temp_y])
+    bet_filtered.valid_indeces_but_not_knee = tuple(bet_filtered.valid_indeces_but_not_knee)
+    
+    x_coords_nonvalid = bet_filtered.bet_areas[bet_filtered.valid_indeces_but_not_knee]
+    y_coords_nonvalid = bet_filtered.pc_error[bet_filtered.valid_indeces_but_not_knee]
+
 
     # Scatter plot of the Error across valid areas
+    ## New lines added
     ax.scatter(x_coords_nonvalid, y_coords_nonvalid, color='red', edgecolors='red', picker=5, alpha =0.5)
     ax.scatter(bet_filtered.valid_knee_bet_areas, bet_filtered.valid_knee_pc_errors, color='b', edgecolors='b', marker='s', picker=5, alpha=0.5)
     ax.scatter(bet_filtered.bet_areas[min_i, min_j], bet_filtered.pc_error[min_i, min_j], marker='s', color='yellow', edgecolors='yellow')
@@ -400,6 +460,9 @@ def plot_area_error_1(bet_filtered, ax=None, ax2=None):
 
     # Axis settings
     ax.set_ylim(290, 310)
+    ## define the y-axis upper limit of the lower figure (ax2)
+    ax2.set_ylim(top=max(y_coords_lower_than_290)*1.1)
+    
     ax.spines['bottom'].set_visible(False)
     ax2.spines['top'].set_visible(False)
     ax.xaxis.set_visible(False)
@@ -449,8 +512,31 @@ def plot_area_error_2(bet_filtered, ax=None):
 
     x_coords = bet_filtered.valid_bet_areas
     y_coords = bet_filtered.valid_pc_errors
-    x_coords_nonvalid = np.array([x for x in x_coords if x not in bet_filtered.valid_knee_bet_areas])
-    y_coords_nonvalid = np.array([y for y in y_coords if y not in bet_filtered.valid_knee_pc_errors])
+    ##x_coords_nonvalid = np.array([x for x in x_coords if x not in bet_filtered.valid_knee_bet_areas])
+    ##y_coords_nonvalid = np.array([y for y in y_coords if y not in bet_filtered.valid_knee_pc_errors])
+    ## New lines added
+    ## Find indices that are in valid_indices but not in valid_knee_indices
+    temp_x = []
+    temp_y = []
+    for i in range(len(bet_filtered.valid_indices[0])):
+        a = [bet_filtered.valid_indices[0][i], bet_filtered.valid_indices[1][i]]
+        temp_checker = 0
+        for j in range(len(bet_filtered.valid_knee_indices[0])):
+            b = [bet_filtered.valid_knee_indices[0][j], bet_filtered.valid_knee_indices[1][j]]
+            if a==b:
+                temp_checker = 1
+        if temp_checker == 0:
+            temp_x.append(a[0])
+            temp_y.append(a[1])
+    bet_filtered.valid_indeces_but_not_knee = np.array([temp_x,temp_y])
+    bet_filtered.valid_indeces_but_not_knee = tuple(bet_filtered.valid_indeces_but_not_knee)
+    if len(bet_filtered.valid_indeces_but_not_knee[0]) > 0:
+        x_coords_nonvalid = bet_filtered.bet_areas[bet_filtered.valid_indeces_but_not_knee]
+        y_coords_nonvalid = bet_filtered.pc_error[bet_filtered.valid_indeces_but_not_knee]
+    else:
+        x_coords_nonvalid = np.empty(0)
+        y_coords_nonvalid = np.empty(0)
+
 
     # Scatter plot of the Error across valid areas
     ax.scatter(x_coords_nonvalid, y_coords_nonvalid, color='red', edgecolors='red', picker=5, alpha=0.5)
@@ -562,13 +648,14 @@ def plot_box_and_whisker(bet_filtered, ax=None):
         ax.set_ylim(y_min[0] - dy, y_min[0] + dy)
     else:
         ax.set_xlim([.75, 1.25])
-
-        if len(y_2)==0:
-                dy = (max(y)-min(y)) * 1
-                ax.set_ylim(min(y) - dy, max(y) + dy)
-        else:
-            dy = (max(y_2) - min(y_2)) * 1
-            ax.set_ylim(min(y_2) - dy, max(y_2) + dy)
+        dy = (max(bet_filtered.valid_bet_areas)-min(bet_filtered.valid_bet_areas)) * 1
+        ax.set_ylim(min(bet_filtered.valid_bet_areas) - dy, max(bet_filtered.valid_bet_areas) + dy)
+        # if len(y_2)==0:
+        #     dy = (max(y)-min(y)) * 1
+        #     ax.set_ylim(min(y) - dy, max(y) + dy)
+        # else:
+        #     dy = (max(y_2) - min(y_2)) * 1
+        #     ax.set_ylim(min(y_2) - dy, max(y_2) + dy)
 
     # Make the boxplot of valid areas
     medianprops = dict(linestyle='--', linewidth=1, color='black', alpha=0.35) # median line properties
@@ -578,3 +665,6 @@ def plot_box_and_whisker(bet_filtered, ax=None):
     # Write BET area
     called_BET_area = """BET Area = {0:0.0f} $m^2/g$""".format(np.around((bet_filtered.bet_areas[min_i, min_j])), decimals=0, out=None)
     ax.text(0.05, 0.90, called_BET_area, {'color': 'black', 'fontsize': 9}, transform=ax.transAxes)
+    
+    points_range = f"Selected Points Range: ({min_i+1},{min_j+1})"
+    ax.text(0.05, 0.80, points_range, {'color': 'black', 'fontsize': 9}, transform=ax.transAxes)

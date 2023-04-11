@@ -20,10 +20,13 @@ from pprint import pprint
 from scipy.interpolate import splrep, pchip_interpolate
 matplotlib.use('Qt5Agg')
 
-NITROGEN_RADIUS = 1.62E-19
-AVAGADRO_N = 6.02E+23
-NITROGEN_MOL_VOL = 44.64117195
-
+##NITROGEN_RADIUS = 1.62E-19
+##NITROGEN_MOL_VOL = 44.64117195
+AVOGADRO_N = 6.02E+23
+## in units of m2
+cross_sectional_area = {"N2": 1.62E-19, "Ar": 1.66E-19, "Kr": 2.02E-19, "Xe": 2.32E-19, "CO2": 1.95E-19, "Custom": None}
+## in units of mmol/litre or mol/m3
+mol_vol = {"N2": 44.64117195, "Ar": 44.642857, "Kr": 44.642857, "Xe": 44.642857, "CO2": 44.642857, "Custom": None}
 
 class BETResult:
     """
@@ -176,7 +179,6 @@ class BETResult:
                 if j == self.knee_index:
                     self.rouq5[i, j] = 1
 
-
 class BETFilterAppliedResults:
     """
     Structure obtained from applying a set of custom filters to a BETResult.
@@ -209,6 +211,12 @@ class BETFilterAppliedResults:
 
         if kwargs.get('use_rouq5', False):
             filter_mask = filter_mask * bet_result.rouq5
+        
+        adsorbate = kwargs.get('adsorbate', "N2")
+        
+        if adsorbate == "Custom":
+            cross_sectional_area[adsorbate] = 1.0E-18 * kwargs.get('cross_sectional_area')
+            mol_vol[adsorbate] = kwargs.get('molar_volume')
 
         # Filter results that have less than the minimum points
         min_points = kwargs.get('min_num_pts', 10)
@@ -218,46 +226,60 @@ class BETFilterAppliedResults:
         min_r2 = kwargs.get('min_r2', 0.9)
         filter_mask = filter_mask * (bet_result.fit_rsquared > min_r2)
 
-        assert np.sum(filter_mask) != 0, "NO valid areas found"
-
-        # Compute valid BET areas
-        self.bet_areas = NITROGEN_RADIUS * AVAGADRO_N * \
-            NITROGEN_MOL_VOL * bet_result.nm * 0.000001
-        self.bet_areas_filtered = self.bet_areas * filter_mask
-        self.valid_indices = np.where(self.bet_areas_filtered > 0)
-
-        # Define isotherm knee as ending on highest P
-        self.list = np.where(self.valid_indices[1] == np.amax(self.valid_indices[1]))
-        self.lower = (self.valid_indices[0])[self.list]
-        self.upper = (self.valid_indices[1])[self.list]
-        self.valid_knee_indices = (self.lower, self.upper)
-        self.knee_only_bet_areas_filtered = self.bet_areas * bet_result.rouq5
-
-
-        # Define the valid cases
-        self.num_valid = len(self.valid_indices[0])
-        self.valid_bet_areas = self.bet_areas[self.valid_indices]
-        self.valid_pc_errors = bet_result.pc_error[self.valid_indices]
-        self.valid_knee_bet_areas = self.bet_areas[self.valid_knee_indices]
-        self.valid_knee_pc_errors = bet_result.pc_error[self.valid_knee_indices]
-        self.valid_calc_pressures = bet_result.calc_pressure[self.valid_indices]
-        self.valid_nm = bet_result.nm[self.valid_indices]
-
-        # Find min error and corresponding indices
-        knee_only_filter = np.zeros([len(bet_result.pressure),len(bet_result.pressure)])
-        knee_only_filter[self.valid_knee_indices] = 1
-        knee_filter = filter_mask * knee_only_filter
-        filtered_pcerrors = bet_result.pc_error + 1000.0 * (1 - filter_mask)
-        knee_filtered_pcerrors = bet_result.pc_error + \
-            1000.0 * (1 - knee_filter)
-        min_i, min_j = np.unravel_index(
-            np.argmin(knee_filtered_pcerrors), filtered_pcerrors.shape)
-        self.min_i = min_i
-        self.min_j = min_j
-
-        self.compute_BET_curve()
-
-        self.std_area = np.std(self.bet_areas[self.valid_indices])
+        ## assert np.sum(filter_mask) != 0, "NO valid areas found"
+        self.has_valid_areas = False
+        self.original_pressure_data = bet_result.original_pressure_data
+        self.original_q_adsorbed_data = bet_result.original_q_adsorbed_data
+        self.comments_to_data =  bet_result.comments_to_data
+        self.adsorbate = adsorbate
+        
+        if np.sum(filter_mask) != 0:
+            self.has_valid_areas = True
+                
+            # Compute valid BET areas
+            ##self.bet_areas = NITROGEN_RADIUS * AVOGADRO_N * \
+            ##    NITROGEN_MOL_VOL * bet_result.nm * 0.000001
+            self.bet_areas = cross_sectional_area[adsorbate] * AVOGADRO_N * \
+                mol_vol[adsorbate] * bet_result.nm * 0.000001
+            self.bet_areas_filtered = self.bet_areas * filter_mask
+            self.valid_indices = np.where(self.bet_areas_filtered > 0)
+    
+            # Define isotherm knee as ending on highest P
+            self.list = np.where(self.valid_indices[1] == np.amax(self.valid_indices[1]))
+            self.lower = (self.valid_indices[0])[self.list]
+            self.upper = (self.valid_indices[1])[self.list]
+            self.valid_knee_indices = (self.lower, self.upper)
+            self.knee_only_bet_areas_filtered = self.bet_areas * bet_result.rouq5
+    
+    
+            # Define the valid cases
+            self.num_valid = len(self.valid_indices[0])
+            self.valid_bet_areas = self.bet_areas[self.valid_indices]
+            self.valid_pc_errors = bet_result.pc_error[self.valid_indices]
+            self.valid_knee_bet_areas = self.bet_areas[self.valid_knee_indices]
+            self.valid_knee_pc_errors = bet_result.pc_error[self.valid_knee_indices]
+            self.valid_calc_pressures = bet_result.calc_pressure[self.valid_indices]
+            self.valid_nm = bet_result.nm[self.valid_indices]
+    
+            ## New lines added
+            ## was needed in the plotting.py file
+            self.pc_errors = bet_result.pc_error
+    
+            # Find min error and corresponding indices
+            knee_only_filter = np.zeros([len(bet_result.pressure),len(bet_result.pressure)])
+            knee_only_filter[self.valid_knee_indices] = 1
+            knee_filter = filter_mask * knee_only_filter
+            filtered_pcerrors = bet_result.pc_error + 1000.0 * (1 - filter_mask)
+            knee_filtered_pcerrors = bet_result.pc_error + \
+                1000.0 * (1 - knee_filter)
+            min_i, min_j = np.unravel_index(
+                np.argmin(knee_filtered_pcerrors), filtered_pcerrors.shape)
+            self.min_i = min_i
+            self.min_j = min_j
+    
+            self.compute_BET_curve()
+    
+            self.std_area = np.std(self.bet_areas[self.valid_indices])
 
     def compute_BET_curve(self):
         """Function for computing BET curve. This is separated to a different function to allow custom min_i min_j"""
@@ -376,7 +398,7 @@ def analyse_file(input_file, output_dir=None, **kwargs):
     output_subdir.mkdir(exist_ok=True, parents=True)
 
     # Compute unfiltered results
-    pressure, q_adsorbed = get_data(input_file=input_file)
+    pressure, q_adsorbed, comments_to_data = get_data(input_file=input_file)
     betsi_unfiltered = BETResult(pressure, q_adsorbed)
 
     # Apply custom filters:

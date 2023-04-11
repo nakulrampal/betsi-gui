@@ -83,10 +83,13 @@ class BETSI_gui(QMainWindow):
             self, 'Select Directory', os.getcwd())
         print(f'Imported directory: {Path(dir_path).name}')
         self.betsi_widget.analyse_directory(dir_path)
-
+        
+        ## New lines added
     def import_file(self):
+        ## file_path = QFileDialog.getOpenFileName(
+        ##     self, 'Select File', os.getcwd(), '*.csv')[0]
         file_path = QFileDialog.getOpenFileName(
-            self, 'Select File', os.getcwd(), '*.csv')[0]
+            self, 'Select File', os.getcwd(), "*.csv *.aif *.txt")[0]
         self.betsi_widget.target_filepath = file_path
         self.betsi_widget.populate_table(csv_path=file_path)
         print(f'Imported file: {Path(file_path).name}')
@@ -98,7 +101,9 @@ class BETSI_gui(QMainWindow):
         paths = [u.toLocalFile() for u in urls]
         extensions = [os.path.splitext(p)[-1] for p in paths]
         # accept files only for now.
-        if all(dt == 'file' for dt in drag_type) and all(ext == '.csv' for ext in extensions):
+        ## New lines added
+        ##if all(dt == 'file' for dt in drag_type) and all(ext == '.csv' for ext in extensions):
+        if all(dt == 'file' for dt in drag_type) and all(ext in ['.csv', '.aif', '.txt'] for ext in extensions):
             e.accept()
         elif len(drag_type) == 1 and os.path.isdir(paths[0]):
             e.ignore()
@@ -111,10 +116,16 @@ class BETSI_gui(QMainWindow):
         paths = [u.toLocalFile() for u in urls]
 
         # Single path to csv file
-        if len(paths) == 1 and Path(paths[0]).suffix == '.csv':
+        ## new lines added
+        ##if len(paths) == 1 and Path(paths[0]).suffix == '.csv':
+        if len(paths) == 1 and Path(paths[0]).suffix in ['.csv', '.aif', '.txt']:
             self.betsi_widget.target_filepath = paths[0]
             self.betsi_widget.populate_table(csv_path=paths[0])
             print(f'Imported file: {Path(paths[0]).name}')
+            ## New lines added
+            self.betsi_widget.bet_object = None
+            self.betsi_widget.bet_filter_result = None
+            
             self.betsi_widget.run_calculation()
 
     def clear(self):
@@ -167,28 +178,62 @@ class BETSI_widget(QWidget):
             f"Loaded File: {self.target_filepath}")
         self.current_output_label.setFont(QtGui.QFont("Times", 10))
         self.current_targetpath_label.setFont(QtGui.QFont("Times", 10))
+        
+        self.current_output_label.setWordWrap(True)
+        self.current_output_label.setAlignment(QtCore.Qt.AlignLeft)
+        #self.current_output_label.setStyleSheet("background-color: lightgreen")
+        self.current_targetpath_label.setWordWrap(True)
+        self.current_targetpath_label.setAlignment(QtCore.Qt.AlignLeft)
+        #self.current_targetpath_label.setStyleSheet("background-color: lightblue")
 
         # add a group box containing controls
         self.criteria_box = QGroupBox("BET area selection criteria")
         self.criteria_box.setMaximumWidth(500)
         self.criteria_box.setMaximumHeight(800)
+        self.criteria_box.setMinimumWidth(400)
+        #self.criteria_box.setMaximumHeight(650)
         self.min_points_label = QLabel(self.criteria_box)
-        self.min_points_label.setText('Minimum number of points in the linear region:')
+        self.min_points_label.setText('Minimum number of points in the linear region: [3,10]')
         self.min_points_edit = QLineEdit()
         self.min_points_edit.setMaximumWidth(75)
         self.min_points_slider = QSlider(QtCore.Qt.Horizontal)
-        self.minr2_label = QLabel('Minimum R<sup>2</sup>:')
+        self.minr2_label = QLabel('Minimum R<sup>2</sup>: [0.8,0.999]')
         self.minr2_edit = QLineEdit()
         self.minr2_edit.setMaximumWidth(75)
         self.minr2_slider = QSlider(QtCore.Qt.Horizontal)
-        self.rouq1_tick = QCheckBox("Rouquerol criteria 1: Monotonic")
-        self.rouq2_tick = QCheckBox("Rouquerol criteria 2: Positive C")
-        self.rouq3_tick = QCheckBox("Rouquerol criteria 3: Pressure in linear range")
-        self.rouq4_tick = QCheckBox("Rouquerol criteria 4: Small error")
-        self.rouq5_tick = QCheckBox("Rouquerol criteria 5: End at the knee")
+        self.rouq1_tick = QCheckBox("Rouquerol criterion 1: Monotonic")
+        self.rouq2_tick = QCheckBox("Rouquerol criterion 2: Positive C")
+        self.rouq3_tick = QCheckBox("Rouquerol criterion 3: Pressure in linear range")
+        self.rouq4_tick = QCheckBox("Rouquerol criterion 4: Error in %, [5,75]")
+        self.rouq5_tick = QCheckBox("Rouquerol criterion 5: End at the knee")
         self.rouq4_edit = QLineEdit()
         self.rouq4_edit.setMaximumWidth(75)
         self.rouq4_slider = QSlider(QtCore.Qt.Horizontal)
+        ## New lines added
+        self.adsorbate_label = QLabel('Adsorbate:')
+        self.adsorbate_combo_box = QComboBox()
+        self.adsorbate_combo_box.addItems(["N2", "Ar", "Kr", "Xe", "CO2", "Custom"])
+        self.adsorbate_cross_section_label = QLabel('Cross sectional area (nm<sup>2</sup>):')
+        self.adsorbate_cross_section_edit = QLineEdit()
+        self.adsorbate_cross_section_edit.setMaximumWidth(75)
+        self.adsorbate_molar_volume_label = QLabel('Molar volume (mol/m<sup>3</sup>):')
+        self.adsorbate_molar_volume_edit = QLineEdit()
+        self.adsorbate_molar_volume_edit.setMaximumWidth(75)
+        self.note_label = QLabel(
+            """Hints:
+   - For convenience, it is best to first set your desired criteria before importing the input file.
+   - Drag and drop the input file into the BETSI window.
+   - Valid input file formats: *.csv, *.txt, *.aif
+   - Make sure to read the warnings that may pop up after BET calculation.  
+   - After the first run, by modifiying any of the parameters above, the calculations will rerun automatically.
+   """)
+        self.note_label.setStyleSheet("background-color: lightblue")
+        self.note_label.setMargin(10)
+        #self.note_label.setIndent(10)
+        self.note_label.setWordWrap(True)
+        self.note_label.setAlignment(QtCore.Qt.AlignLeft)
+        
+        
         self.export_button = QPushButton('Export Results')
         self.export_button.pressed.connect(self.export)
 
@@ -206,20 +251,37 @@ class BETSI_widget(QWidget):
 
         # set the defaults
         self.set_defaults()
-
+        
         # connect the actions
         self.minr2_edit.editingFinished.connect(self.minr2_edit_changed)
-        self.minr2_edit.returnPressed.connect(self.minr2_edit_changed)
+        ##self.minr2_edit.returnPressed.connect(self.minr2_edit_changed)
         self.rouq4_edit.editingFinished.connect(self.rouq4_edit_changed)
-        self.rouq4_edit.returnPressed.connect(self.rouq4_edit_changed)
+        ##self.rouq4_edit.returnPressed.connect(self.rouq4_edit_changed)
         self.min_points_edit.editingFinished.connect(
             self.min_points_edit_changed)
-        self.min_points_edit.returnPressed.connect(
-            self.min_points_edit_changed)
-        self.rouq4_slider.valueChanged.connect(self.rouq4_slider_changed)
-        self.minr2_slider.valueChanged.connect(self.minr2_slider_changed)
-        self.min_points_slider.valueChanged.connect(
-            self.min_points_slider_changed)
+        ##self.min_points_edit.returnPressed.connect(
+        ##    self.min_points_edit_changed)
+        ##self.rouq4_slider.valueChanged.connect(self.rouq4_slider_changed)
+        ##self.minr2_slider.valueChanged.connect(self.minr2_slider_changed)
+        ##self.min_points_slider.valueChanged.connect(
+        ##    self.min_points_slider_changed)
+
+        ## New lines added
+        self.adsorbate_combo_box.activated.connect(self.adsorbate_combo_box_changed)
+        ##self.adsorbate_cross_section_edit.returnPressed.connect(self.adsorbate_related_edit_changed)
+        self.adsorbate_cross_section_edit.editingFinished.connect(self.adsorbate_related_edit_changed)
+        
+        self.adsorbate_molar_volume_edit.editingFinished.connect(self.adsorbate_related_edit_changed)
+        ##self.adsorbate_molar_volume_edit.returnPressed.connect(self.adsorbate_related_edit_changed)
+
+
+        ##self.minr2_edit.editingFinished.connect(self.line_edit_changed)
+        ##self.rouq4_edit.editingFinished.connect(self.line_edit_changed)
+        ##self.min_points_edit.editingFinished.connect(
+        ##    self.line_edit_changed)
+        ##self.adsorbate_cross_section_edit.editingFinished.connect(self.line_edit_changed)
+        ##self.adsorbate_molar_volume_edit.editingFinished.connect(self.line_edit_changed)
+
 
         # add the table for results
         self.results_table = QTableWidget(self)
@@ -232,14 +294,14 @@ class BETSI_widget(QWidget):
             self.min_points_label, criteria_layout.rowCount(), 1, 1, 1)
         criteria_layout.addWidget(
             self.min_points_edit, criteria_layout.rowCount() - 1, 2)
-        criteria_layout.addWidget(
-            self.min_points_slider, criteria_layout.rowCount(), 1, 1, 2)
+        ##criteria_layout.addWidget(
+        ##    self.min_points_slider, criteria_layout.rowCount(), 1, 1, 2)
         criteria_layout.addWidget(
             self.minr2_label, criteria_layout.rowCount(), 1)
         criteria_layout.addWidget(
             self.minr2_edit, criteria_layout.rowCount() - 1, 2)
-        criteria_layout.addWidget(
-            self.minr2_slider, criteria_layout.rowCount(), 1, 1, 2)
+        ##criteria_layout.addWidget(
+        ##    self.minr2_slider, criteria_layout.rowCount(), 1, 1, 2)
         criteria_layout.addWidget(
             self.rouq1_tick, criteria_layout.rowCount(), 1)
         criteria_layout.addWidget(
@@ -250,17 +312,40 @@ class BETSI_widget(QWidget):
             self.rouq4_tick, criteria_layout.rowCount(), 1)
         criteria_layout.addWidget(
             self.rouq4_edit, criteria_layout.rowCount() - 1, 2)
-        criteria_layout.addWidget(
-            self.rouq4_slider, criteria_layout.rowCount(), 1, 1, 2)
+        ##criteria_layout.addWidget(
+        ##    self.rouq4_slider, criteria_layout.rowCount(), 1, 1, 2)
         criteria_layout.addWidget(
             self.rouq5_tick, criteria_layout.rowCount(), 1)
+        ## New lines added
+        criteria_layout.addWidget(
+            self.adsorbate_label, criteria_layout.rowCount(), 1)
+        criteria_layout.addWidget(
+            self.adsorbate_combo_box, criteria_layout.rowCount() - 1, 2)
+        criteria_layout.addWidget(
+            self.adsorbate_cross_section_label, criteria_layout.rowCount(), 1)
+        criteria_layout.addWidget(
+            self.adsorbate_cross_section_edit, criteria_layout.rowCount() - 1, 2)
+        criteria_layout.addWidget(
+            self.adsorbate_molar_volume_label, criteria_layout.rowCount(), 1)
+        criteria_layout.addWidget(
+            self.adsorbate_molar_volume_edit, criteria_layout.rowCount() - 1, 2)
+        
+        criteria_layout.addWidget(
+            self.note_label, criteria_layout.rowCount(), 1, 1, 2)
+        
         criteria_layout.addWidget(
             self.export_button, criteria_layout.rowCount(), 1, 1, 2)
 
+        # criteria_layout.addWidget(
+        #     self.current_output_label, criteria_layout.rowCount(), 1, 1, 1)
+        # criteria_layout.addWidget(
+        #     self.current_targetpath_label, criteria_layout.rowCount(), 1, 1, 1)
         criteria_layout.addWidget(
-            self.current_output_label, criteria_layout.rowCount(), 1, 1, 1)
+            self.current_output_label, criteria_layout.rowCount(), 1, 1, 2)
         criteria_layout.addWidget(
-            self.current_targetpath_label, criteria_layout.rowCount(), 1, 1, 1)
+            self.current_targetpath_label, criteria_layout.rowCount(), 1, 1, 2)
+        
+        
 
         criteria_layout.addItem(QSpacerItem(
             20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding), criteria_layout.rowCount() + 1, 1)
@@ -283,10 +368,19 @@ class BETSI_widget(QWidget):
 
     def maybe_run_calculation(self):
         self.check_rouq_compatibility()
+        ## New lines added
+        self.check_adsorbate_compatibility()
+        ##if self.target_filepath is not None:
         if self.target_filepath is not None:
-            self.run_calculation()
+            if self.adsorbate_combo_box.currentText() != "Custom":
+                self.run_calculation()
+            elif float(self.adsorbate_cross_section_edit.text()) > 0 and float(self.adsorbate_molar_volume_edit.text()) > 0:
+                self.run_calculation()
 
     def plot_bet(self):
+        # if plt.get_fignums() != [1, 2]:
+        #     plt.close('all')
+        plt.close('all')
         if self.current_fig is not None:
             self.current_fig.clear()
             self.current_fig_2.clear()
@@ -294,7 +388,7 @@ class BETSI_widget(QWidget):
             # check if the figure has been closed, if it doesn't reset it to none and replot
             if self.current_fig is not None and not plt.fignum_exists(self.current_fig.number):
                 self.current_fig = None
-                self.current_fig_2=None
+                self.current_fig_2 = None
             fig = create_matrix_plot(self.bet_filter_result, self.rouq3_tick.isChecked(), self.rouq4_tick.isChecked(),  name=Path(
                 self.target_filepath).stem,  fig=self.current_fig)
             fig_2 = regression_diagnostics_plots(self.bet_filter_result, name=Path(
@@ -307,7 +401,7 @@ class BETSI_widget(QWidget):
             self.current_fig_2 = fig_2
             plt.figure(num=1)
             plt.draw()
-            plt.figure(num=2)
+            plt.figure(num=2).canvas.manager.window.move(500,0)
             plt.draw()
         except TypeError:
             pass
@@ -315,7 +409,12 @@ class BETSI_widget(QWidget):
     def run_calculation(self):
         """ Applies the currently specified filters to the currently specified target csv file. """
 
-        assert self.target_filepath, "You must provide a csv file before calling run."
+        ## assert self.target_filepath, "You must provide a csv file before calling run."
+        if not self.target_filepath:
+            warnings = "You must provide an input file (e.g. *.csv, *.txt, *.aif) before calling run. Press \"Clear\" and try again. Please refer to the \"Hints\" box for a quick guide."
+            information = ""
+            self.show_dialog(warnings, information)
+            return
 
         use_rouq1 = self.rouq1_tick.isChecked()
         use_rouq2 = self.rouq2_tick.isChecked()
@@ -325,11 +424,24 @@ class BETSI_widget(QWidget):
         min_num_pts = int(self.min_points_edit.text())
         min_r2 = float(self.minr2_edit.text())
         max_perc_error = float(self.rouq4_edit.text())
+        adsorbate = self.adsorbate_combo_box.currentText()
+        cross_sectional_area = float(self.adsorbate_cross_section_edit.text())
+        molar_volume = float(self.adsorbate_molar_volume_edit.text())
 
+        ## New lines or modifications made
         # Retrieve the BETSI results object if non-existent
         if self.bet_object is None:
-            pressure, q_adsorbed = get_data(input_file=self.target_filepath)
+            pressure, q_adsorbed, comments_to_data = get_data(input_file=self.target_filepath)
+            if len(pressure) == 0 or len(q_adsorbed) == 0:
+                warnings = "You must provide a valid input file. BETSI cannot read it. Press \"Clear\" and try again with a valid one."
+                information = ""
+                self.show_dialog(warnings, information)
+                return
             self.bet_object = BETResult(pressure, q_adsorbed)
+            self.bet_object.comments_to_data = comments_to_data
+            self.bet_object.original_pressure_data = pressure
+            self.bet_object.original_q_adsorbed_data = q_adsorbed
+            
 
         # Apply the currently selected filters.
         self.bet_filter_result = BETFilterAppliedResults(self.bet_object,
@@ -340,8 +452,108 @@ class BETSI_widget(QWidget):
                                                          use_rouq3=use_rouq3,
                                                          use_rouq4=use_rouq4,
                                                          use_rouq5=use_rouq5,
-                                                         max_perc_error=max_perc_error)
-        self.plot_bet()
+                                                         max_perc_error=max_perc_error,
+                                                         adsorbate=adsorbate, 
+                                                         cross_sectional_area=cross_sectional_area,
+                                                         molar_volume=molar_volume)
+        
+        ## Adds interpolated points to adsorption data if no valid area was found by the original data
+        if not self.bet_filter_result.has_valid_areas:
+            iter_num = 0
+            self.bet_object.comments_to_data['interpolated_points_added'] = True
+            while (not self.bet_filter_result.has_valid_areas) and (iter_num < 3):
+                print('Adding extra interpolated points to the data')
+                
+                pressure = self.bet_object.pressure
+                q_adsorbed = self.bet_object.q_adsorbed
+                comments_to_data = self.bet_object.comments_to_data
+                interpolated_points_added = self.bet_object.comments_to_data['interpolated_points_added']
+                original_pressure_data = self.bet_object.original_pressure_data
+                original_q_adsorbed_data = self.bet_object.original_q_adsorbed_data
+                
+                self.bet_object = None
+                self.bet_filter_result = None
+                pressure_added_points, q_adsorbed_added_points = isotherm_pchip_reconstruction(pressure, q_adsorbed)
+                self.bet_object = BETResult(pressure_added_points, q_adsorbed_added_points)
+                self.bet_object.comments_to_data = comments_to_data
+                self.bet_object.comments_to_data['interpolated_points_added'] = interpolated_points_added
+                self.bet_object.original_pressure_data = original_pressure_data
+                self.bet_object.original_q_adsorbed_data = original_q_adsorbed_data
+                
+                # Apply the currently selected filters.
+                self.bet_filter_result = BETFilterAppliedResults(self.bet_object,
+                                                                 min_num_pts=min_num_pts,
+                                                                 min_r2=min_r2,
+                                                                 use_rouq1=use_rouq1,
+                                                                 use_rouq2=use_rouq2,
+                                                                 use_rouq3=use_rouq3,
+                                                                 use_rouq4=use_rouq4,
+                                                                 use_rouq5=use_rouq5,
+                                                                 max_perc_error=max_perc_error,
+                                                                 adsorbate=adsorbate, 
+                                                                 cross_sectional_area=cross_sectional_area,
+                                                                 molar_volume=molar_volume)
+                iter_num += 1
+        
+        ## Warnings for pop-up message box
+        warnings = ""
+        information = ""
+        if self.bet_object.comments_to_data['has_negative_pressure_points']:
+            warnings += "- Imported adsorption data has negative pressure point(s)!\n"
+            information += "- Negative pressure point(s) have been removed from the data.\n"
+        if not self.bet_object.comments_to_data['monotonically_increasing_pressure']:
+            warnings += "- The pressure points are not monotonically increasing!\n"
+            information += "- Non-monotonically increasing pressure point(s) have been removed from the data.\n"
+        if not self.bet_object.comments_to_data['rel_pressure_between_0_and_1']:
+            warnings += "- The relative pressure values must lie between 0 and 1!\n"
+            information += "- Relative pressure point(s) above 1.0 have been removed from the data.\n"
+        if self.bet_object.comments_to_data['interpolated_points_added']:
+            warnings += "- No valid areas found with the chosen minimum number of points! So, interpolated points are added to the data!\n"
+        
+        if self.bet_filter_result.has_valid_areas:
+            self.plot_bet()
+            if warnings != "":
+                warnings = "Consider the following warning(s):\n" + warnings
+                if information != "":
+                    information = "Note(s):\n" + information
+                self.show_dialog(warnings, information)
+        else:
+            if warnings == "":
+                warnings = "No valid areas found! Try again with a new set of data and/or change your criteria"
+                self.show_dialog(warnings, information)
+            else:
+                warnings_1 = "No valid areas found! Try again with a new set of data and/or change your criteria.\n"
+                warnings_2 = "Consider the following warning(s):\n"
+                warnings = warnings_1 + warnings_2 + warnings
+                information = "Note(s):\n" + information
+                self.show_dialog(warnings, information)
+    
+    ## New lines addedd        
+    def show_dialog(self, warnings, information):
+        dialog = QMessageBox()
+        dialog.setText(warnings)
+        dialog.setWindowTitle('Warnings')
+        if warnings.find("No valid areas found!") != -1:
+            dialog.setIcon(QMessageBox().Critical)
+            dialog.setStandardButtons(QMessageBox.Ok)
+            dialog.addButton("Clear", QMessageBox.AcceptRole)
+            if information != "":
+                information += "\n\nPress \"Clear\" if you want to clear input data, reset to default values and start over with a new set of data.\n"
+            else:
+                information = "Press \"Clear\" if you want to clear input data, reset to default values and start over with a new set of data.\n"
+        elif warnings.find("You must provide a") != -1:
+            dialog.setIcon(QMessageBox().Critical)
+            dialog.addButton("Clear", QMessageBox.AcceptRole)
+        else:
+            dialog.setIcon(QMessageBox().Warning)
+        dialog.setInformativeText(information)
+        
+        dialog.buttonClicked.connect(self.dialog_clicked)
+        dialog.exec_()
+
+    def dialog_clicked(self, dialog_button):
+        if dialog_button.text() == "Clear":
+            self.clear()
 
     def point_picker(self, event):
         line = event.artist
@@ -377,10 +589,20 @@ class BETSI_widget(QWidget):
         min_num_points = int(self.min_points_edit.text())
         min_r2 = float(self.minr2_edit.text())
         max_perc_error = float(self.rouq4_edit.text())
-
+        
+        adsorbate = self.adsorbate_combo_box.currentText()
+        cross_sectional_area = float(self.adsorbate_cross_section_edit.text())
+        molar_volume = float(self.adsorbate_molar_volume_edit.text())
+        
+        ## New lines added
+        ##csv_paths = Path(dir_path).glob('*.csv')
         csv_paths = Path(dir_path).glob('*.csv')
+        aif_paths = Path(dir_path).glob('*.aif')
+        txt_paths = Path(dir_path).glob('*.txt')
+        input_file_paths = (*csv_paths, *aif_paths, txt_paths)
 
-        for file_path in csv_paths:
+        ##for file_path in csv_paths:
+        for file_path in input_file_paths:
             # Update the table with current file
             self.populate_table(csv_path=str(file_path))
 
@@ -394,7 +616,10 @@ class BETSI_widget(QWidget):
                          use_rouq3=use_rouq3,
                          use_rouq4=use_rouq4,
                          use_rouq5=use_rouq5,
-                         max_perc_error=max_perc_error)
+                         max_perc_error=max_perc_error,
+                         adsorbate=adsorbate,
+                         cross_sectional_area=cross_sectional_area,
+                         molar_volume=molar_volume)
 
     def set_defaults(self):
         """Sets the widget to default state
@@ -416,12 +641,33 @@ class BETSI_widget(QWidget):
         self.minr2_edit.setText('0.995')
         self.rouq4_edit.setText('20')
         self.min_points_edit.setText('10')
+        
+        ## New lines added
+        ## set defaults for adsorbate related parameters
+        self.adsorbate_combo_box.setCurrentIndex(0)
+        #self.adsorbate_cross_section_edit.setText('0.0')
+        #self.adsorbate_molar_volume_edit.setText('0.0')
+        self.adsorbate_cross_section_edit.setText(str(cross_sectional_area[self.adsorbate_combo_box.currentText()] * 1.0E18))
+        self.adsorbate_molar_volume_edit.setText(str(mol_vol[self.adsorbate_combo_box.currentText()]))
+        
+        
+        self.line_edit_values_before = {"minr2_edit": self.minr2_edit.text(), \
+            "rouq4_edit": self.rouq4_edit.text(), \
+            "min_points_edit": self.min_points_edit.text(), \
+            "adsorbate_cross_section_edit": self.adsorbate_cross_section_edit.text(), \
+            "adsorbate_molar_volume_edit": self.adsorbate_molar_volume_edit.text()}
+        
+        
         # trigger the corresponding sliders
         self.rouq4_edit_changed()
         self.minr2_edit_changed()
         self.min_points_edit_changed()
         # check the compatibility
         self.check_rouq_compatibility()
+        
+        ## check the compatibility for adsorbate
+        self.check_adsorbate_compatibility()
+        
         # if there is a figure, replot
         self.plot_bet()
 
@@ -436,6 +682,13 @@ class BETSI_widget(QWidget):
         if self.current_fig is not None:
             plt.close(fig=self.current_fig)
             plt.close(fig=self.current_fig_2)
+        
+        ## New lines added here
+        ##reset the parameters to defaults
+        self.target_filepath = None
+        self.current_targetpath_label.setText(
+            f"Loaded File: {self.target_filepath}")
+        self.set_defaults()
 
     def set_editable(self, state):
         if state:
@@ -450,6 +703,9 @@ class BETSI_widget(QWidget):
             self.rouq4_slider.setEnabled(True)
             self.minr2_slider.setEnabled(True)
             self.min_points_slider.setEnabled(True)
+            self.adsorbate_combo_box.setEnabled(True)
+            self.adsorbate_cross_section_edit.setEnabled(True)
+            self.adsorbate_molar_volume_edit.setEnabled(True)
         else:
             self.rouq1_tick.setEnabled(False)
             self.rouq2_tick.setEnabled(False)
@@ -462,6 +718,9 @@ class BETSI_widget(QWidget):
             self.rouq4_slider.setEnabled(False)
             self.minr2_slider.setEnabled(False)
             self.min_points_slider.setEnabled(False)
+            self.adsorbate_combo_box.setEnabled(False)
+            self.adsorbate_cross_section_edit.setEnabled(False)
+            self.adsorbate_molar_volume_edit.setEnabled(False)
 
     def check_rouq_compatibility(self):
         use_rouq1 = self.rouq1_tick.isChecked()
@@ -475,6 +734,17 @@ class BETSI_widget(QWidget):
             self.rouq2_tick.setChecked(True)
             self.rouq2_tick.setEnabled(False)
 
+    def check_adsorbate_compatibility(self):
+        if self.adsorbate_combo_box.currentText() != "Custom":
+            self.adsorbate_cross_section_edit.setEnabled(False)
+            self.adsorbate_molar_volume_edit.setEnabled(False)            
+            self.adsorbate_cross_section_edit.setText("{0:0.3f}".format(cross_sectional_area[self.adsorbate_combo_box.currentText()] * 1.0E18))
+            self.adsorbate_molar_volume_edit.setText("{0:0.3f}".format(mol_vol[self.adsorbate_combo_box.currentText()]))
+            #self.adsorbate_cross_section_edit.setText("0.0")
+            #self.adsorbate_molar_volume_edit.setText("0.0")
+        else:
+            self.adsorbate_cross_section_edit.setEnabled(True)
+            self.adsorbate_molar_volume_edit.setEnabled(True)
             
     def populate_table(self, csv_path):
         self.results_table.setColumnCount(2)
@@ -489,7 +759,7 @@ class BETSI_widget(QWidget):
             f"Loaded File: {self.target_filepath}")
 
         if csv_path is not None and Path(csv_path).exists():
-            pressure, q_adsorbed = get_data(input_file=csv_path)
+            pressure, q_adsorbed, comments_to_data = get_data(input_file=csv_path)
             self.results_table.setRowCount(len(pressure))
             for i in range(len(pressure)):
                 self.results_table.setItem(
@@ -522,7 +792,9 @@ class BETSI_widget(QWidget):
             self.minr2_slider.setValue(value)
         except (ValueError, TypeError):
             self.minr2_edit.setText('0.995')
-        self.maybe_run_calculation()
+        if self.line_edit_values_before["minr2_edit"] != self.minr2_edit.text():
+            self.line_edit_values_before["minr2_edit"] = self.minr2_edit.text()
+            self.maybe_run_calculation()
 
     def rouq4_edit_changed(self):
         value = self.rouq4_edit.text()
@@ -539,7 +811,9 @@ class BETSI_widget(QWidget):
             self.rouq4_slider.setValue(value)
         except (ValueError, TypeError):
             self.rouq4_edit.setText('20')
-        self.maybe_run_calculation()
+        if self.line_edit_values_before["rouq4_edit"] != self.rouq4_edit.text():
+            self.line_edit_values_before["rouq4_edit"] = self.rouq4_edit.text()
+            self.maybe_run_calculation()
 
     def min_points_edit_changed(self):
         value = self.min_points_edit.text()
@@ -556,7 +830,9 @@ class BETSI_widget(QWidget):
             self.min_points_slider.setValue(value)
         except (ValueError, TypeError):
             self.min_points_edit.setText('10')
-        self.maybe_run_calculation()
+        if self.line_edit_values_before["min_points_edit"] != self.min_points_edit.text():
+            self.line_edit_values_before["min_points_edit"] = self.min_points_edit.text()
+            self.maybe_run_calculation()
 
     def rouq4_slider_changed(self):
         value = self.rouq4_slider.value()
@@ -572,6 +848,51 @@ class BETSI_widget(QWidget):
         value = self.min_points_slider.value()
         self.min_points_edit.setText(str(value))
         self.maybe_run_calculation()
+        
+    def adsorbate_related_edit_changed(self):
+        if not self.is_float(self.adsorbate_cross_section_edit.text()):
+            self.adsorbate_cross_section_edit.setText("0.0")
+        if not self.is_float(self.adsorbate_molar_volume_edit.text()):
+            self.adsorbate_molar_volume_edit.setText("0.0")
+        if self.line_edit_values_before["adsorbate_cross_section_edit"] != self.adsorbate_cross_section_edit.text() or \
+        self.line_edit_values_before["adsorbate_molar_volume_edit"] != self.adsorbate_molar_volume_edit.text():
+            self.line_edit_values_before["adsorbate_cross_section_edit"] = self.adsorbate_cross_section_edit.text()
+            self.line_edit_values_before["adsorbate_molar_volume_edit"] = self.adsorbate_molar_volume_edit.text()
+            self.maybe_run_calculation()
+    
+    def adsorbate_combo_box_changed(self):
+        if self.adsorbate_combo_box.currentText() == "Custom":
+            self.adsorbate_cross_section_edit.setText("0.0")
+            self.adsorbate_molar_volume_edit.setText("0.0")
+        self.maybe_run_calculation()
+                
+    def line_edit_changed(self):
+        # modify_check = []
+        # modify_check.append(self.minr2_edit.isModified())
+        # modify_check.append(self.rouq4_edit.isModified())
+        # modify_check.append(self.min_points_edit.isModified())
+        # modify_check.append(self.adsorbate_cross_section_edit.isModified())
+        # modify_check.append(self.adsorbate_molar_volume_edit.isModified())
+        current_line_edit_values = self.get_line_edit_current_values()
+        if self.line_edit_values_before != current_line_edit_values:
+            self.maybe_run_calculation()
+        self.line_edit_values_before = current_line_edit_values
+    
+    def get_line_edit_current_values(self):
+        current_line_edit_values = []
+        current_line_edit_values.append(self.minr2_edit.text())
+        current_line_edit_values.append(self.rouq4_edit.text())
+        current_line_edit_values.append(self.min_points_edit.text())
+        current_line_edit_values.append(self.adsorbate_cross_section_edit.text())
+        current_line_edit_values.append(self.adsorbate_molar_volume_edit.text())
+        return current_line_edit_values
+    
+    def is_float(self, string):
+        try:
+            float(string)
+            return True
+        except ValueError:
+            return False
 
     def __del__(self):
         try:
