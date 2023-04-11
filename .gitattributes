@@ -1,3 +1,4 @@
 executables/betsi-linux filter=lfs diff=lfs merge=lfs -text
 executables/betsi-windows.exe filter=lfs diff=lfs merge=lfs -text
 executables/**/* filter=lfs diff=lfs merge=lfs -text
+executables/* filter=lfs diff=lfs merge=lfs -text
